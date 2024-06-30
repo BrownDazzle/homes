@@ -11,17 +11,17 @@ import { ConfirmModal } from "@/app/components/modals/confirm-modal";
 import { useConfettiStore } from "@/app/hooks/use-confetti-store";
 import { useSession } from "next-auth/react";
 
-interface ActionsProps {
+interface PremiumActionsProps {
   disabled: boolean;
   listingId: string;
-  isReserved: boolean;
+  isPremium: boolean;
 };
 
-export const Actions = ({
+export const PremiumActions = ({
   disabled,
   listingId,
-  isReserved
-}: ActionsProps) => {
+  isPremium
+}: PremiumActionsProps) => {
   const { data: session } = useSession();
   const user = session?.user
   const router = useRouter();
@@ -33,12 +33,12 @@ export const Actions = ({
     try {
       setIsLoading(true);
 
-      if (isReserved) {
-        await axios.patch(`/api/properties/${listingId}/unpublish`, { user });
-        toast.success("Property listing unpublished succesfully!");
+      if (isPremium) {
+        await axios.patch(`/api/properties/${listingId}/unpremier`, { user });
+        toast.success("Property premium unlisted succesfully!");
       } else {
-        await axios.patch(`/api/properties/${listingId}/publish`, { user });
-        toast.success("Property listing published succesfully!");
+        await axios.patch(`/api/properties/${listingId}/premier`, { user });
+        toast.success("Property premium listed succesfully!");
         confetti.onOpen();
       }
 
@@ -73,15 +73,9 @@ export const Actions = ({
         disabled={isLoading}
         variant="outline"
         size="sm"
-        className="text-white"
       >
-        {isReserved ? "Unpublish" : "Publish"}
+        {isPremium ? "Remove From Premium" : "Add To Premium"}
       </Button>
-      <ConfirmModal onConfirm={onDelete}>
-        <Button size="sm" disabled={isLoading} variant="destructive">
-          <Trash className="h-4 w-4 text-white" />
-        </Button>
-      </ConfirmModal>
     </div>
   )
 }

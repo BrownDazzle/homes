@@ -1,45 +1,40 @@
 'use client';
+
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Image from "next/image";
 import { useRef } from "react";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
 import useCountries from "@/app/hooks/useCountries";
 import { SafeUser } from "@/app/types";
 import Heading from './Heading';
 import HeartButton from './HeartButton';
-
-const est_1 = "/images/est_1.jpg";
-const est_2 = "/images/est_2.jpg";
-const est_3 = "/images/est_3.jpg";
-const est_4 = "/images/est_4.jpg";
-const est_5 = "/images/est_5.jpg";
-
-export const images = [
-  est_1, est_2, est_3, est_4, est_5
-];
+import Countdown from './ui/countdown';
+import { IListing } from '../lib/database/models/listing.model';
+import Badge from './ui/badge';
+import { CiBadgeDollar } from 'react-icons/ci';
 
 interface OfferListProps {
-  title: string | undefined;
-  district: string | undefined;
-  compound: string | undefined;
-  imageSrc: string[] | undefined;
-  id: string;
-  currentUser?: SafeUser | null;
+  data: IListing[]
 }
 
-const OfferList = () => {
+const OfferList = ({ data }: OfferListProps) => {
+  const params = useSearchParams();
+  const router = useRouter();
   const sliderRef = useRef<Slider | null>(null);
 
   const settings = {
     dots: true,
-    infinite: true,
-    speed: 500,
+    infinite: data.length > 1,
+    speed: 2000,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: false,
-    autoplaySpeed: 3000, // Adjust the duration as needed
+    autoplay: true,
+    autoplaySpeed: 60000, // Adjust the duration as needed
+    adaptiveHeight: true,
   };
 
   const handlePrevious = () => {
@@ -50,6 +45,14 @@ const OfferList = () => {
     sliderRef.current?.slickNext();
   };
 
+  if (data.length === 0) {
+    return null;
+  }
+
+  const handleClick = (id: string) => {
+    router.push(`/listings/${id}`)
+  }
+
   return (
     <>
       <Heading
@@ -57,7 +60,7 @@ const OfferList = () => {
         subtitle="Promotions, deals, and special offers for you"
       />
       <Slider ref={sliderRef} {...settings}>
-        {images.map((banner, index) => (
+        {data.map((banner, index) => (
           <div
             className="
                 w-full
@@ -69,21 +72,39 @@ const OfferList = () => {
             key={index}
           >
             <Image
-              src={banner}
+              src={banner.imageSrc[0]}
               fill
-              className="object-cover w-full"
+              className="object-cover w-full cursor-pointer"
               alt="Image"
+              onClick={() => handleClick(banner._id)}
             />
             <div
               className="
                   absolute
                   top-5
+                  left-5
+                "
+            >
+              <Countdown targetDate={banner.premiumTargetDate.toISOString()} />
+            </div>
+            {banner.isPremium && (
+              <div className="absolute top-2 left-2">
+                <Badge icon={CiBadgeDollar} />
+              </div>
+            )}
+            <div
+              className="
+                  hidden
+                  md:block
+                  absolute
+                  lg:top-5
+                  bottom-5
                   right-5
                 "
             >
               <Heading
-                title="Cozy Flats"
-                subtitle="Beautiful place to spend a weekend"
+                title={banner.compound as string}
+                subtitle={`${banner.district}, ${banner.province}`}
               />
             </div>
             <div
@@ -94,8 +115,8 @@ const OfferList = () => {
                 "
             >
               <Heading
-                title="Cozy Flats"
-                subtitle="Beautiful place to spend a weekend"
+                title={banner.title as string}
+                subtitle={banner.description}
               />
             </div>
             <div
@@ -103,30 +124,30 @@ const OfferList = () => {
               bg-white
               rounded-full
               p-2
-            absolute
-            bottom-[50%]
-            left-5
-          "
+              absolute
+              bottom-[50%]
+              left-5
+              cursor-pointer
+              "
             >
-              <button onClick={handlePrevious}>Previous</button>
+              <HiChevronLeft onClick={handlePrevious} />
             </div>
             <div
               className="
               bg-white
               rounded-full
               p-2
-            absolute
-            bottom-[50%]
-            right-5
-          "
+              absolute
+              bottom-[50%]
+              right-5
+              cursor-pointer
+              "
             >
-              <button onClick={handleNext}>Next</button>
+              <HiChevronRight onClick={handleNext} />
             </div>
           </div>
         ))}
       </Slider>
-
-
     </>
   );
 }

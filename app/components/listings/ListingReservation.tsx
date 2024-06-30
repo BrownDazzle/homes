@@ -9,6 +9,7 @@ import Chat from "../Chat";
 import { SafeUser } from "@/app/types";
 import useCountries from "@/app/hooks/useCountries";
 import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
 
 const Map = dynamic(() => import('../Map'), {
   ssr: false
@@ -16,6 +17,7 @@ const Map = dynamic(() => import('../Map'), {
 
 interface ListingReservationProps {
   propertyUserId: string;
+  listingId: string;
   currentUser: SafeUser;
   price: number;
   dateRange: Range,
@@ -31,6 +33,7 @@ const ListingReservation: React.FC<
   ListingReservationProps
 > = ({
   propertyUserId,
+  listingId,
   currentUser,
   price,
   dateRange,
@@ -41,6 +44,9 @@ const ListingReservation: React.FC<
   disabledDates,
   locationValue
 }) => {
+    const { data: session } = useSession()
+    const userId = session?.user._id;
+
     const reservationModal = useReservationModal();
     const reservationFee = 0.5 / 10 * totalPrice;
 
@@ -48,8 +54,10 @@ const ListingReservation: React.FC<
 
     const coordinates = getByValue(locationValue)?.latlng
 
-    const onReserve = useCallback((id: string) => {
-      reservationModal.propertyUserId = id;
+    const onReserve = useCallback((data: any) => {
+      reservationModal.propertyUserId = data.userId;
+      reservationModal.listingId = data.listingId;
+      reservationModal.price = totalPrice;
       reservationModal.onOpen();
     }, [reservationModal, reservationFee]);
 
@@ -69,7 +77,7 @@ const ListingReservation: React.FC<
             ZMW {price}
           </div>
           <div className="font-light text-neutral-600">
-            night
+
           </div>
         </div>
         <hr />
@@ -100,13 +108,13 @@ const ListingReservation: React.FC<
           </div>
         </div>
         <hr />
-        <div className="p-4">
+        {userId !== propertyUserId ? (<div className="p-4">
           <Button
             disabled={disabled}
             label="Poke Landlord"
-            onClick={() => onReserve(propertyUserId)}
+            onClick={() => onReserve({ listingId: listingId, userId: propertyUserId })}
           />
-        </div>
+        </div>) : null}
       </div>
     );
   }

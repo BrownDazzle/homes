@@ -8,9 +8,7 @@ interface IParams {
   listingId?: string;
 }
 
-export async function POST(request: Request,
-) {
-
+export async function POST(request: Request) {
   try {
     const body = await request.json();
 
@@ -38,19 +36,20 @@ export async function POST(request: Request,
     return NextResponse.json(updatedUser);
 
   } catch (error) {
-    console.log("Fa vErr", error)
+    console.log("Fa vErr", error);
+    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }
 
-export async function DELETE({ params }: { params: IParams }) {
+export async function PATCH(request: Request) {
   try {
+    const body = await request.json();
+    const { listingId } = body;
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
       return NextResponse.error();
     }
-
-    const listingId = params.listingId;
 
     if (!listingId || typeof listingId !== 'string') {
       throw new Error('Invalid ID');
@@ -66,6 +65,7 @@ export async function DELETE({ params }: { params: IParams }) {
 
     return NextResponse.json(updatedUser);
   } catch (error) {
-    console.log("Fa vErr", error)
+    console.log("Fa vErr", error);
+    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }

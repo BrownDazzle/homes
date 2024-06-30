@@ -1,39 +1,39 @@
 'use client';
 
-import Select from 'react-select'
-
+import Select from 'react-select';
 import useCountries from '@/app/hooks/useCountries';
 
 export type CountrySelectValue = {
   flag: string;
   label: string;
-  latlng: number[],
+  latlng?: string[];
   region: string;
-  value: string
+  value: string;
 }
 
 interface CountrySelectProps {
   value?: CountrySelectValue;
   onChange: (value: CountrySelectValue) => void;
+  options: CountrySelectValue[]; // Add this line
 }
 
 const CountrySelect: React.FC<CountrySelectProps> = ({
   value,
-  onChange
+  onChange,
+  options // Add this line
 }) => {
   const { getAll } = useCountries();
 
-  return ( 
+  return (
     <div>
       <Select
         placeholder="Anywhere"
         isClearable
-        options={getAll()}
+        options={options} // Use the passed options prop
         value={value}
         onChange={(value) => onChange(value as CountrySelectValue)}
         formatOptionLabel={(option: any) => (
-          <div className="
-          flex flex-row items-center gap-3">
+          <div className="flex flex-row items-center gap-3">
             <div>{option.flag}</div>
             <div>
               {option.label},
@@ -46,7 +46,7 @@ const CountrySelect: React.FC<CountrySelectProps> = ({
         classNames={{
           control: () => 'p-3 border-2',
           input: () => 'text-lg',
-          option: () => 'text-lg'
+          option: () => 'text-lg',
         }}
         theme={(theme) => ({
           ...theme,
@@ -54,12 +54,12 @@ const CountrySelect: React.FC<CountrySelectProps> = ({
           colors: {
             ...theme.colors,
             primary: 'black',
-            primary25: '#ffe4e6'
-          }
+            primary25: '#ffe4e6',
+          },
         })}
       />
     </div>
-   );
+  );
 }
- 
+
 export default CountrySelect;

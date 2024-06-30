@@ -58,7 +58,8 @@ const ReservationModal = () => {
   const router = useRouter();
   const reservationModal = useReservationModal();
   const propertyUserId = reservationModal.propertyUserId;
-  const conversationId = reservationModal.conversationId;
+  const price = reservationModal.price;
+  const listingId = reservationModal.listingId;
 
   const [step, setStep] = useState(STEPS.LOCATION);
   const [isLoading, setIsLoading] = useState(false);
@@ -108,7 +109,7 @@ const ReservationModal = () => {
 
     axios.post('/api/conversations', { userId: propertyUserId })
       .then((data) => {
-        reservationModal.conversationId = data.data._id;
+
         // router.push(`/conversations/${data.data._id}`);
       })
       .finally(() => setIsLoading(false));
@@ -119,14 +120,15 @@ const ReservationModal = () => {
 
     try {
       setIsLoading(true);
-      axios.post('/api/conversations', { userId: propertyUserId })
-        .then((data) => {
-          router.push(`/conversations/${data.data._id}`);
-          reservationModal.onClose();
-        })
-        .finally(() => setIsLoading(false));
-
-
+      const reserve = await axios.post('/api/reservations', { listingId, totalPrice: price })
+      if (reserve) {
+        axios.post('/api/conversations', { userId: propertyUserId })
+          .then((data) => {
+            router.push(`/conversations/${data.data._id}`);
+            reservationModal.onClose();
+          })
+          .finally(() => setIsLoading(false));
+      }
     } catch (error) {
       console.error(error);
     }
@@ -180,16 +182,6 @@ const ReservationModal = () => {
     </div>
   );
 
-  if (step === STEPS.DATE) {
-    bodyContent = (
-      <div className="flex flex-col gap-8">
-        <Heading title="When do you plan to go?" subtitle="Make sure everyone is free!" />
-        <div className='relative'>
-          {conversationId && (<ChatId conversationId={conversationId} />)}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <Modal
@@ -197,6 +189,7 @@ const ReservationModal = () => {
       title=""
       actionLabel={actionLabel}
       onSubmit={onSubmit}
+      disabled={isLoading}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.LOCATION ? undefined : onBack}
       onClose={reservationModal.onClose}

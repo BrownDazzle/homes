@@ -77,12 +77,12 @@ import LocationDropdown from "../ui/location-dropdown";
 
 export const categories = [
   {
-    label: 'Single-Family',
+    label: 'Single',
     icon: FaHome,
     description: 'This property is a single-family home.',
   },
   {
-    label: 'Condominium (Condo)',
+    label: 'Condominium',
     icon: FaBuilding,
     description: 'This property is a condominium (condo).',
   },
@@ -112,7 +112,7 @@ export const categories = [
     description: 'This property is a quadruplex.',
   },
   {
-    label: 'Multi-Family',
+    label: 'Family',
     icon: FaBuilding,
     description: 'This property is a multi-family home.',
   },
@@ -142,7 +142,7 @@ export const categories = [
     description: 'This property is a penthouse.',
   },
   {
-    label: 'Studio Apartment',
+    label: 'Studio',
     icon: FaBed,
     description: 'This property is a studio apartment.',
   },

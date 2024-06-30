@@ -3,6 +3,7 @@ import { IReservation } from "./reservation.model";
 import { IUser } from "./user.model";
 
 export interface IListing extends Document {
+  _id: string;
   title?: string;
   description?: string;
   imageSrc: string[];
@@ -23,10 +24,13 @@ export interface IListing extends Document {
   area?: number;
   plot_size?: number;
   isReserved: boolean;
+  isPremium: boolean;
+  premiumTargetDate: Date,
   property_type?: string;
   costRange: string;
   userId: Schema.Types.ObjectId;
   price?: number;
+  reservationIds?: string[];
   user?: Schema.Types.ObjectId | IUser; // Reference to IUser
   reservations?: [Schema.Types.ObjectId | IReservation];
 }
@@ -52,10 +56,15 @@ const ListingSchema = new Schema({
   area: { type: Number },
   plot_size: { type: Number },
   isReserved: { type: Boolean, default: false },
+  isPremium: { type: Boolean, default: false },
+  premiumTargetDate: { type: Date, default: Date.now },
   property_type: { type: String },
   costRange: { type: String },
   userId: { type: String },
   price: { type: Number },
+  reservationIds: [{
+    type: String
+  }],
 
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   reservations: [{ type: Schema.Types.ObjectId, ref: 'Reservation' }],

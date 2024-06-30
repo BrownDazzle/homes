@@ -53,6 +53,10 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  favoriteIds: [
+    {
+      type: String
+    }],
   conversationIds: [{
     type: Schema.Types.ObjectId,
     ref: 'Conversation',

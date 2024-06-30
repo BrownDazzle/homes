@@ -2,14 +2,14 @@
 
 import { IconType } from "react-icons";
 
-interface CategoryBoxProps {
+interface PropertyInputProps {
   icon: IconType,
   label: string;
   selected?: boolean;
   onClick: (value: string) => void;
 }
 
-const CategoryBox: React.FC<CategoryBoxProps> = ({
+const PropertyInput: React.FC<PropertyInputProps> = ({
   icon: Icon,
   label,
   selected,
@@ -21,22 +21,26 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
       className={`
         rounded-xl
         border-2
-        p-4
+        w-full
+        px-4
+        py-2
         flex
-        flex-col
+        justify-center
+        items-center
         gap-3
-        hover:border-black
+        text-yellow-900
+        hover:border-neutral-200
         transition
         cursor-pointer
-        ${selected ? 'border-black' : 'border-neutral-200'}
+        ${selected ? 'border-neutral-200 bg-neutral-200 text-white' : 'border-neutral-200'}
       `}
     >
-      <Icon size={30} />
-      <div className="font-semibold w-full">
+      <Icon size={20} />
+      <p className="font-semibold text-sm">
         {label}
-      </div>
+      </p>
     </div>
   );
 }
 
-export default CategoryBox;
+export default PropertyInput;

@@ -51,7 +51,7 @@ export type SafeUser = Omit<
   createdAt: string;
   updatedAt: string;
   emailVerified: string | null;
-  favoriteIds: []
+  favoriteIds: string[]
 };
 
 // ====== URL QUERY PARAMS

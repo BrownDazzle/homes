@@ -131,7 +131,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             district={listing.district}
             compound={listing.compound}
             id={listing._id}
-            currentUser={user as any}
+            currentUser={user as SafeUser}
           />
           <div
             className="
@@ -162,6 +162,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             >
               <ListingReservation
                 propertyUserId={listing.user._id}
+                listingId={listing._id}
                 currentUser={currentUser as SafeUser}
                 price={listing.price as number}
                 totalPrice={totalPrice as number}

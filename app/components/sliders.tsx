@@ -1,12 +1,13 @@
 // components/Sliders.tsx
 "use client"
-import React from 'react';
+import React, { useRef } from 'react';
 import Slider from 'react-slick';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import Image from 'next/image';
+import { HiChevronRight } from 'react-icons/hi';
 
 interface SlidersProps {
     banners: string[];// Array of image URLs
@@ -17,9 +18,15 @@ interface SlidersProps {
 }
 
 const Sliders: React.FC<SlidersProps> = ({ banners, speed, slidesToShow, rtl, dots }) => {
+    const sliderRef = useRef<Slider | null>(null);
+
+    const handleNext = () => {
+        sliderRef.current?.slickNext();
+    };
+
+
     const settings = {
-        dots: dots,
-        infinite: true,
+        infinite: banners && banners.length > 1,
         speed: speed,
         slidesToShow: slidesToShow,
         slidesToScroll: 1,
@@ -29,11 +36,12 @@ const Sliders: React.FC<SlidersProps> = ({ banners, speed, slidesToShow, rtl, do
     };
 
     return (
-        <Slider {...settings}>
-            {banners.map((banner, index) => (
+        <Slider ref={sliderRef} {...settings}>
+            {banners?.map((banner, index) => (
                 <div className="
                 w-full
-                h-[150px]
+                h-[180px]
+                lg:h-[200px]
                 max-h-[200px]
                 overflow-hidden 
                 rounded-xl
@@ -47,8 +55,22 @@ const Sliders: React.FC<SlidersProps> = ({ banners, speed, slidesToShow, rtl, do
                         className="object-cover w-full h-full"
                         alt="Image"
                     />
+                    <div
+                        className="
+              bg-white
+              rounded-full
+              p-2
+              absolute
+              bottom-[50%]
+              right-5
+              cursor-pointer
+              "
+                    >
+                        <HiChevronRight onClick={handleNext} />
+                    </div>
                 </div>
             ))}
+
         </Slider>
     );
 };

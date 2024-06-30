@@ -6,8 +6,8 @@ export interface IReservation extends Document {
   _id: string;
   userId: string,
   listingId: string,
-  startDate: Date,
-  endDate: Date,
+  startDate?: Date,
+  endDate?: Date,
   totalPrice: number,
   createdAt: Date,
 
@@ -18,7 +18,6 @@ export interface IReservation extends Document {
 
 const ReservationSchema = new Schema({
   userId: { type: String },
-  listingId: { type: String },
   startDate: { type: Date },
   endDate: { type: Date },
   totalPrice: { type: Number },

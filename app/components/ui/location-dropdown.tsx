@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react';
 import { provinces, districts, towns, Location } from '../../data';
 

@@ -18,6 +18,7 @@ import CountrySelect, {
 import Heading from '../Heading';
 import AddressSelect, { AddressSelectValue } from '../inputs/AddressSelect';
 import { District, Province, Town, provinces, provincesNames } from '@/app/data';
+import PlacesHome from '../places';
 
 enum STEPS {
   LOCATION = 0,
@@ -167,6 +168,7 @@ const SearchModal = () => {
         title="Where do you wanna go?"
         subtitle="Find the perfect location!"
       />
+      <PlacesHome />
       <AddressSelect
         value={selectedProvinceValue}
         placeholder="Province"

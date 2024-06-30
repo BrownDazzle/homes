@@ -21,7 +21,7 @@ const ReservationsPage = async () => {
     )
   }
 
-  const reservations = await getReservations({ authorId: currentUser._id });
+  const reservations = await getReservations({ userId: currentUser._id });
 
   if (reservations.length === 0) {
     return (

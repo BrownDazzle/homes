@@ -34,6 +34,14 @@ import Button from "@/app/components/Button";
 import { Actions } from "../components/actions";
 import { Checkbox } from "@/app/components/ui/checkbox";
 import AreaInput, { costRanges } from "@/app/components/inputs/AreaInput";
+import { PremiumActions } from "../components/premium-action";
+import PremiumInput from "@/app/components/inputs/PremiumInput";
+import PremiumSubscriptionWrapper from "@/app/components/ui/premium-subscription";
+import PremiumCard from "@/app/components/ui/premium-card";
+import { CiBadgeDollar } from "react-icons/ci";
+import { SlBadge } from "react-icons/sl";
+import { useConfettiStore } from "@/app/hooks/use-confetti-store";
+import PlacesHome from "@/app/components/places";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -55,6 +63,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   currentUser
 }) => {
   const rentModal = useRentModal();
+  const confetti = useConfettiStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState(categories);
 
@@ -102,6 +111,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       bookingEndDate: listing.bookingEndDate,
       bookingDuration: listing.bookingDuration,
       bookingTotalCharge: listing.bookingTotalCharge,
+      premiumTargetDate: listing.premiumTargetDate
     }
   });
 
@@ -140,6 +150,36 @@ const ListingClient: React.FC<ListingClientProps> = ({
     setCustomValue('bookingTotalCharge', totalCharge)
   };
 
+  const handlePremiumDateChange = (startDate: Date | undefined,
+    endDate: Date | undefined,
+    duration: number,
+    totalCharge: number) => {
+    // Handle the booking change here, e.g. save the data to the database
+    setCustomValue('premiumTargetDate', endDate)
+    setCustomValue('bookingDuration', duration)
+    setCustomValue('bookingTotalCharge', totalCharge)
+  };
+
+  const handleSubscribe = async (data: { premiumTargetDate: Date }) => {
+    try {
+      setIsLoading(true);
+
+      if (listing.isPremium) {
+        await axios.patch(`/api/properties/${listing._id}/unpremier`, { user, data });
+        toast.success("Property premium unlisted succesfully!");
+      } else {
+        await axios.patch(`/api/properties/${listing._id}/premier`, { user, data });
+        toast.success("Property premium listed succesfully!");
+        confetti.onOpen();
+      }
+
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log("Submit_Data", data)
@@ -347,12 +387,9 @@ const ListingClient: React.FC<ListingClientProps> = ({
                   title="Where is your place located?"
                   subtitle="Help guests find you!"
                 />
-                <CountrySelect
-                  value={location}
-                  onChange={(value) => setCustomValue('location', value)}
-                />
-                <Map center={location?.latlng} />
+              <PlacesHome />
               </div>
+              
             </div>
             <div
               className="
@@ -485,6 +522,20 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
             </div>
 
+          </div>
+          <div className="w-full ">
+            <PremiumCard
+              title="Premium Property"
+              icon={CiBadgeDollar}
+              duration="week"
+              description="Enjoy exclusive benefits with our premium subscription."
+              price={29.99}
+              imageUrl={listing.imageSrc[0]} // Replace with your image path
+              isPremium={listing.isPremium}
+              isLoading={isLoading}
+              targetDate={listing.premiumTargetDate}
+              onSubscribe={handleSubscribe}
+            />
           </div>
           <div className="flex flex-row gap-4">
             <Button

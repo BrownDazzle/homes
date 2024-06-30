@@ -1,11 +1,12 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Container from '../Container';
 import { ChevronDown } from 'lucide-react';
 import { cn, formUrlQuery, removeKeysFromQuery } from '@/app/lib/utils';
 import { District, Province, Town, provinces } from '@/app/data';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
 const Dropdown: React.FC = () => {
     const params = useSearchParams();
@@ -13,6 +14,26 @@ const Dropdown: React.FC = () => {
     const [hoveredProvince, setHoveredProvince] = useState<Province | null>(null);
     const [hoveredDistrict, setHoveredDistrict] = useState<District | null>(null);
     const [hoveredTown, setHoveredTown] = useState<Town | null>(null);
+
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    const scrollLeft = () => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollBy({
+                left: -200,
+                behavior: 'smooth'
+            });
+        }
+    };
+
+    const scrollRight = () => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollBy({
+                left: 200,
+                behavior: 'smooth'
+            });
+        }
+    };
 
     const handleMouseEnter = (province: Province) => {
         setHoveredProvince(province);
@@ -64,15 +85,36 @@ const Dropdown: React.FC = () => {
                     lg:border-[1px] 
                     w-full 
                     h-full
-                    rounded-full 
+                    rounded-none
+                    md:rounded-full 
                     shadow-sm 
                     hover:shadow-md 
                     transition 
                     cursor-pointer
                     overflow-hidden
+                    bg-white
                 "
             >
                 <div
+                    className="
+                    block
+                    xl:hidden
+              bg-yellow-900
+              text-white
+              rounded-full
+              p-2
+            absolute
+            bottom-8
+            lg:bottom-2
+            left-0
+            xl:left-3
+            cursor-pointer
+          "
+                >
+                    <HiChevronLeft onClick={scrollLeft} />
+                </div>
+                <div
+                    ref={scrollContainerRef}
                     className="
                         w-full
                         h-full
@@ -81,13 +123,13 @@ const Dropdown: React.FC = () => {
                         items-center 
                         justify-between
                         overflow-x-auto
-                        showed-scroll-bar
+                       hide-scroll-bar
                     "
                 >
                     {provinces.map((province) => (
                         <div
                             key={province.name}
-                            className="w-full py-2 hover:bg-gray-200 cursor-pointer border-r-[1px]"
+                            className="w-full sm:py-1 md:py-2 hover:bg-white hover:text-slate-900 text-yellow-900 cursor-pointer border-r-[0.5px] border-neutral-200"
                             onMouseEnter={() => handleMouseEnter(province)}
                             onMouseLeave={handleMouseLeave}
                         >
@@ -105,11 +147,11 @@ const Dropdown: React.FC = () => {
                                     z-5
                                 "
                             >
-                                <span className='flex flex-row w-full text-sm font-semibold'>{province.name}</span>
+                                <span className='flex flex-row w-full text-sm font-semibold sm:text-xs md:text-sm lg:text-sm'>{province.name}</span>
                                 <ChevronDown size={12} />
                             </div>
                             {hoveredProvince === province && (
-                                <div className="absolute z-10 bg-white shadow-lg top-35 rounded-md mt-2">
+                                <div className="absolute z-10 bg-white shadow-xl top-35 rounded-md mt-2">
                                     {province.districts.map((district) => (
                                         <div
                                             key={district.name}
@@ -139,6 +181,24 @@ const Dropdown: React.FC = () => {
                             )}
                         </div>
                     ))}
+                </div>
+                <div
+                    className="
+                    block
+                    xl:hidden
+              bg-yellow-900
+              text-white
+              rounded-full
+              p-2
+            absolute
+            bottom-8
+            lg:bottom-2
+            right-0
+              xl:right-3
+            cursor-pointer
+          "
+                >
+                    <HiChevronRight onClick={scrollRight} />
                 </div>
             </div>
         </Container>

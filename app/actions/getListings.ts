@@ -14,6 +14,7 @@ export interface IListingsParams {
   district?: string;
   compound?: string;
   isReserved?: boolean;
+  isPremium?: boolean;
   property_type?: string;
 }
 
@@ -27,6 +28,7 @@ export default async function getListings(
       guestCount,
       bathroomCount,
       isReserved,
+      isPremium,
       startDate,
       endDate,
       category,
@@ -46,6 +48,9 @@ export default async function getListings(
       query.isReserved = isReserved;
     }
 
+    if (isPremium) {
+      query.isPremium = isPremium;
+    }
 
     if (category) {
       query.category = category;

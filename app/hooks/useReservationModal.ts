@@ -4,7 +4,8 @@ import { CreateUserParams } from '../types';
 interface ReservationModalStore {
   isOpen: boolean;
   propertyUserId: string,
-  conversationId: string,
+  listingId: string,
+  price: number,
   onOpen: () => void;
   onClose: () => void;
 }
@@ -12,7 +13,8 @@ interface ReservationModalStore {
 const useReservationModal = create<ReservationModalStore>((set) => ({
   isOpen: false,
   propertyUserId: '',
-  conversationId: '',
+  listingId: '',
+  price: 1,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false })
 }));

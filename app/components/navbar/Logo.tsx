@@ -8,7 +8,7 @@ const Logo = () => {
 
   return (
     <>
-      <p onClick={() => router.push('/')} className="font-bold text-2xl text-yellow-900">Homes.Com</p>
+      <p onClick={() => router.push('/')} className="font-bold text-2xl text-yellow-900 cursor-pointer">Homes.Com</p>
 
       {/*<Image
       onClick={() => router.push('/')}

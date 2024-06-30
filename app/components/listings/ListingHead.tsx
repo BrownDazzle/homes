@@ -11,16 +11,6 @@ import { SafeUser } from "@/app/types";
 import Heading from "../Heading";
 import HeartButton from "../HeartButton";
 
-const est_1 = "/images/est_1.jpg"
-const est_2 = "/images/est_2.jpg"
-const est_3 = "/images/est_3.jpg"
-const est_4 = "/images/est_4.jpg"
-const est_5 = "/images/est_5.jpg"
-
-export const images = [
-  est_1, est_2, est_3, est_4, est_5
-]
-
 interface ListingHeadProps {
   title: string | undefined;
   district: string | undefined;
@@ -40,12 +30,12 @@ const ListingHead: React.FC<ListingHeadProps> = ({
 }) => {
   const settings = {
     dots: true,
-    infinite: true,
-    speed: 500,
+    infinite: imageSrc && imageSrc?.length > 1,
+    speed: 2000,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000, // Adjust the duration as needed
+    autoplaySpeed: 5000, // Adjust the duration as needed
   };
 
   return (

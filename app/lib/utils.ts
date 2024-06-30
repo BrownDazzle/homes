@@ -93,3 +93,22 @@ export const handleError = (error: unknown) => {
   console.error(error)
   throw new Error(typeof error === 'string' ? error : JSON.stringify(error))
 }
+
+
+import csc from 'countries-states-cities';
+
+export const getProvinces = () => {
+  const zambia = csc.getAllCountries().find(country => country.name === 'Zambia');
+  if (zambia) {
+    return csc.getStatesOfCountry(zambia.id);
+  }
+  return [];
+};
+
+export const getDistricts = (provinceId: number) => {
+  return csc.getCitiesOfState(provinceId);
+};
+
+export const getTowns = (districtId: number) => {
+  return csc.getCitiesOfState(districtId); // Adjust this method based on the actual API if needed
+};

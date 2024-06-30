@@ -43,6 +43,8 @@ export default async function getListingById(
       guestCount: listing.guestCount,
       locationValue: listing.locationValue,
       isReserved: listing.isReserved,
+      isPremium: listing.isPremium,
+      premiumTargetDate: listing.premiumTargetDate,
       property_type: listing.property_type,
       price: listing.price,
       createdAt: listing.createdAt.toString(),

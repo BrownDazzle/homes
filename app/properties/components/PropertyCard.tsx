@@ -14,7 +14,8 @@ import {
 
 import HeartButton from "@/app/components/HeartButton";
 import Button from "@/app/components/Button";
-import ClientOnly from "@/app/components/ClientOnly";
+import { FcEditImage } from "react-icons/fc";
+import { Actions } from "./actions";
 
 interface PropertyCardProps {
     data: SafeListing;
@@ -82,8 +83,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
     return (
         <div
-            onClick={() => router.push(`/properties/${data._id}`)}
-            className="col-span-1 cursor-pointer group"
+            className="col-span-1 group shadow-b-md rounded-md"
         >
             <div className="flex flex-col gap-2 w-full">
                 <div
@@ -107,6 +107,17 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
                         src={data?.imageSrc[0] as string}
                         alt="Listing"
                     />
+                    <div className="absolute top-2 left-2">
+                        <Actions disabled={disabled as boolean} listingId={data._id} isReserved={data.isReserved} />
+                    </div>
+                    <div onClick={() => router.push(`/properties/${data._id}`)}
+                        className="absolute top-2 right-2 cursor-pointer"
+                    >
+                        <p className="flex flex-row items-center gap-2 px-2 py-1 bg-white border-1px border-white rounded-md">
+                            <span className="font-semibold text-sm text-slate-900">Edit</span>
+                            <FcEditImage size={24} />
+                        </p>
+                    </div>
                 </div>
                 <div className="font-semibold text-lg">
                     {data.title}
@@ -116,20 +127,12 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
                 </div>
                 <div className="flex flex-row items-center gap-1">
                     <div className="font-semibold">
-                        $ {price}
+                        ZMW {price}
                     </div>
-                    {!reservation && (
+                    {/*!reservation && (
                         <div className="font-light">night</div>
-                    )}
+                    )*/}
                 </div>
-                {onAction && actionLabel && (
-                    <Button
-                        disabled={disabled}
-                        small
-                        label={actionLabel}
-                        onClick={handleCancel}
-                    />
-                )}
             </div>
         </div>
     );

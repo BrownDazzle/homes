@@ -10,12 +10,14 @@ import ClientOnly from "./components/ClientOnly";
 import FilterIndex from "./components/filters/Index";
 import OfferList from "./components/Offer";
 import Heading from "./components/Heading";
+import PropertyFilter from "./components/property-filter";
 
 interface HomeProps {
   searchParams: IListingsParams
 };
 
 const Home = async ({ searchParams }: HomeProps) => {
+  const premiumlisting = await getListings({ ...searchParams, isReserved: true, isPremium: true });
   const listings = await getListings({ ...searchParams, isReserved: true });
   const currentUser = await getCurrentUser();
   const startTime = new Date(); // Example start time (replace with actual start time)
@@ -32,21 +34,18 @@ const Home = async ({ searchParams }: HomeProps) => {
   return (
     <ClientOnly>
       <Container>
-        <div className="pt-5 pb-10">
-          <OfferList />
+        <div className="lg:pt-5 pb-10">
+          <OfferList data={premiumlisting} />
         </div>
-        <Heading
-          title="Properties"
-          subtitle=""
-          center
-        />
+        <Heading title="Property Types" subtitle="Filter by property type" />
+        <PropertyFilter />
         <div
           className="
           pt-5
             grid 
             grid-cols-1 
             sm:grid-cols-1 
-            md:grid-cols-1
+            md:grid-cols-2
             lg:grid-cols-2
             xl:grid-cols-3
             2xl:grid-cols-4
@@ -60,8 +59,7 @@ const Home = async ({ searchParams }: HomeProps) => {
               currentUser={currentUser}
               key={listing._id}
               data={listing}
-              startTime={startTime}
-              duration={duration}
+
             />
           ))}
         </div>

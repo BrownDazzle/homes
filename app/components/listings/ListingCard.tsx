@@ -17,7 +17,8 @@ import Button from "../Button";
 import ClientOnly from "../ClientOnly";
 import Sliders from "../sliders";
 import Heading from "../Heading";
-import { images } from "./ListingHead";
+import Badge from "../ui/badge";
+import { CiBadgeDollar } from "react-icons/ci";
 
 interface ListingCardProps {
   data: SafeListing;
@@ -27,8 +28,7 @@ interface ListingCardProps {
   actionLabel?: string;
   actionId?: string;
   currentUser?: SafeUser | null
-  startTime: Date; // Start time of the listing
-  duration: number; // Duration of the listing in minutes
+
 };
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -39,34 +39,10 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionLabel,
   actionId = '',
   currentUser,
-  startTime,
-  duration
+
 }) => {
   const router = useRouter();
   const { getByValue } = useCountries();
-  const [remainingTime, setRemainingTime] = useState<number>(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      const endTime = new Date(startTime?.getTime() + duration * 60000); // Convert duration to milliseconds
-      const timeDifference = endTime.getTime() - now.getTime();
-
-      if (timeDifference <= 0) {
-        // Listing has expired
-        clearInterval(interval);
-        setRemainingTime(0);
-      } else {
-        // Update remaining time
-        setRemainingTime(timeDifference);
-      }
-    }, 1000); // Update every second
-
-    return () => clearInterval(interval);
-  }, [startTime, duration]);
-
-  // Format remaining time
-  const formattedRemainingTime = new Date(remainingTime).toISOString().substr(11, 8);
 
 
   const location = getByValue(data?.locationValue as string);
@@ -87,7 +63,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
       return reservation.totalPrice;
     }
 
-    return data.price;
+    return data?.price;
   }, [reservation, data?.price]);
 
   const reservationDate = useMemo(() => {
@@ -98,7 +74,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
     const start = new Date(reservation.startDate);
     const end = new Date(reservation.endDate);
 
-    return `${format(start, 'PP')} - ${format(end, 'PP')}`;
+    //return `${format(start, 'PP')} - ${format(end, 'PP')}`;
   }, [reservation]);
 
   return (
@@ -116,7 +92,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             rounded-xl
           "
         >
-          <Sliders banners={data.imageSrc as string[]} speed={500} slidesToShow={1} rtl={false} dots={true} />
+          <Sliders banners={data?.imageSrc as string[]} speed={500} slidesToShow={1} rtl={false} dots={true} />
           <div className="
             absolute
             top-3
@@ -128,22 +104,27 @@ const ListingCard: React.FC<ListingCardProps> = ({
               currentUser={currentUser}
             />
           </div>
+          {data?.isPremium && (
+            <div className="absolute top-2 left-2">
+              <Badge label="Premium" icon={CiBadgeDollar} />
+            </div>
+          )}
         </div>
-        <div onClick={() => router.push(`/listings/${data._id}`)} className="flex flex-col gap-4 w-full p-2">
+        <div onClick={() => router.push(`/listings/${data?._id}`)} className="flex flex-col gap-1 w-full p-2">
           <Heading
             title={data?.title as string}
             subtitle={`${data?.district}, ${data?.compound}`}
           />
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 pl-2">
             <div className="font-semibold text-lg">
-              {data.property_type}
+              {data?.property_type}
             </div>
             <div className="font-light font-semibold text-neutral-500">
-              {reservationDate || data.category}
+              {reservationDate || data?.category}
             </div>
             <div className="flex flex-row items-center gap-1 w-full">
               {!reservation && (
-                <div className="font-light">{`${data.roomCount} Room${data?.roomCount && data?.roomCount > 1 ? "s" : ""}`}</div>
+                <div className="font-light">{`${data?.roomCount} Room${data?.roomCount && data?.roomCount > 1 ? "s" : ""}`}</div>
               )}
               <div className="font-semibold">
                 ZMW {price}

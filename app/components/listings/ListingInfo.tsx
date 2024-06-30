@@ -9,6 +9,7 @@ import { CreateUserParams, SafeUser } from "@/app/types";
 import Avatar from "../Avatar";
 import ListingCategory from "./ListingCategory";
 import AmenitiesList from "../AmenitiesList";
+import { useRouter } from "next/navigation";
 
 const Map = dynamic(() => import('../Map'), {
   ssr: false
@@ -39,7 +40,11 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   category,
   locationValue,
 }) => {
+  const router = useRouter()
 
+  const handleProfile = () => {
+    router.push(`/profile/${user._id}`)
+  }
 
   return (
     <div className="col-span-4 flex flex-col gap-8">
@@ -52,7 +57,9 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             flex-row 
             items-center
             gap-2
+            cursor-pointer
           "
+          onClick={handleProfile}
         >
           <div>Hosted by {user?.name}</div>
           <Avatar src={user?.image} />

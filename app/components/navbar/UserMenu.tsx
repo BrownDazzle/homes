@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useRentModal from "@/app/hooks/useRentModal";
-import { SafeUser } from "@/app/types";
+import { CreateUserParams, SafeUser } from "@/app/types";
 
 import MenuItem from "./MenuItem";
 import Avatar from "../Avatar";
@@ -17,6 +17,7 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import useChatModal from "@/app/hooks/useChatModal";
 import Button from "../Button";
+import UserProfile from "@/app/components/ui/UserProfile"
 
 interface UserMenuProps {
   CurrentUser?: SafeUser | null
@@ -64,10 +65,12 @@ const UserMenu: React.FC<UserMenuProps> = ({
             md:block
             text-sm 
             font-semibold 
-            py-3 
-            px-4 
+            py-2 
+            px-3
             rounded-full 
-            hover:bg-neutral-100 
+            bg-rose-500
+            text-white
+            hover:bg-rose-600 
             transition 
             cursor-pointer
           "
@@ -77,9 +80,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
         {user ? (<div
 
           className="
-p-4
+px-2
 md:py-1
-md:px-2
+sm:px-2
 border-[1px] 
 border-neutral-200 
 flex 
@@ -97,7 +100,27 @@ transition
             <Avatar src={user?.image as string} />
             <RiArrowDropDownFill />
           </div>
-        </div>) : (<Button label="SignIn" small={true} onClick={() => signIn("google")} />)}
+        </div>) : (<div
+
+          className="
+px-2
+md:py-1
+sm:px-2
+border-[1px] 
+border-neutral-200 
+flex 
+flex-row 
+items-center 
+gap-5 
+rounded-full 
+cursor-pointer 
+hover:shadow-md 
+transition
+"
+        >
+          <Button label="SignIn" small={true} onClick={() => signIn("google")} />
+        </div>
+        )}
 
       </div>
       {isOpen && (
@@ -117,46 +140,7 @@ transition
           "
         >
           <div className="flex flex-col cursor-pointer">
-            {user ? (
-              <>
-                <MenuItem
-                  label="My trips"
-                  onClick={() => router.push('/trips')}
-                />
-                <MenuItem
-                  label="My favorites"
-                  onClick={() => router.push('/favorites')}
-                />
-                <MenuItem
-                  label="My reservations"
-                  onClick={() => router.push('/reservations')}
-                />
-                <MenuItem
-                  label="My properties"
-                  onClick={() => router.push('/properties')}
-                />
-                <MenuItem
-                  label="List your property"
-                  onClick={rentModal.onOpen}
-                />
-                <hr />
-                <MenuItem
-                  label="Logout"
-                  onClick={() => signOut()}
-                />
-              </>
-            ) : (
-              <>
-                <MenuItem
-                  label="chat"
-                  onClick={loginModal.onOpen}
-                />
-                <MenuItem
-                  label="Sign up"
-                  onClick={registerModal.onOpen}
-                />
-              </>
-            )}
+            {user ? <UserProfile user={user as CreateUserParams} setOpenProfile={setIsOpen} /> : null}
           </div>
         </div>
       )}
