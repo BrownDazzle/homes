@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { CreateUserParams } from '../types';
+import { IListing } from '../lib/database/models/listing.model';
 
 interface ReservationModalStore {
   isOpen: boolean;
@@ -13,7 +14,7 @@ interface ReservationModalStore {
 const useReservationModal = create<ReservationModalStore>((set) => ({
   isOpen: false,
   propertyUserId: '',
-  listingId: '',
+  listingId: "",
   price: 1,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false })

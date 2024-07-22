@@ -35,7 +35,7 @@ export default function UserBox({ data }: UserBoxProps) {
   rounded-lg transition cursor-pointer text-neutral-100"
         onClick={handleClick}
       >
-        <Avatar src={data.image} />
+        <Avatar src={data.image as string} />
         <div className="min-w-0 flex-1">
           <div className="focus:outline-none">
             <div className="flex justify-center items-center mb-1">

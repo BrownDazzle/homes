@@ -8,7 +8,7 @@ import {
   useForm
 } from 'react-hook-form';
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next-nprogress-bar";
 import { useMemo, useState } from "react";
 
 import useRentModal from '@/app/hooks/useRentModal';

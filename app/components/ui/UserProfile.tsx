@@ -3,7 +3,7 @@
 import React from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 import { CreateUserParams } from '@/app/types';
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next-nprogress-bar";
 import { TbBuildingBank, TbShieldLockFilled } from 'react-icons/tb';
 import useRentModal from '@/app/hooks/useRentModal';
 import Image from 'next/image';
@@ -72,7 +72,7 @@ const UserProfile = ({ user, setOpenProfile }: ProfileProps) => {
   ];
 
   return (
-    <div className="nav-item fixed right-1 top-16 bg-white shadow-lg  text-yellow-900  dark:bg-[#42464D] pt-2 px-8 pb-6 rounded-lg sm:w-full md:w-96 h-[80vh] z-[250] overflow-y-scroll showed-scroll-bar">
+    <div className="nav-item fixed right-1 top-16 bg-white shadow-lg  text-yellow-900  dark:bg-[#42464D] pt-2 px-8 pb-6 rounded-lg sm:w-full md:w-96 h-[90vh] z-[250] overflow-y-scroll showed-scroll-bar">
       <div className="flex justify-end items-center">
         <button
           type="button"

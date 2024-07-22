@@ -16,10 +16,16 @@ import { ReactNode } from 'react';
 import ChatModal from './components/modals/ChatModal';
 import ReservationModal from './components/modals/ReservationModal';
 
-export const metadata = {
+import { Metadata } from 'next';
+import LoadingProvider from './components/modals/Loader';
+
+export const metadata: Metadata = {
   title: 'Homes.Com',
-  description: 'Sale And Rent Estates,Farms,Houses etc..',
-}
+  description: 'Sale And Rent Estates, Farms, Houses, etc..',
+  icons: {
+    icon: '/images/logo1.png',
+  },
+};
 
 const font = Nunito({
   subsets: ['latin'],
@@ -37,19 +43,21 @@ const RootLayout: React.FC<LayoutProps> = ({ children, session }) => {
     <html lang="en">
       <body className={font.className}>
         <Provider session={session as never}>
-          <ClientOnly>
-            <ToasterProvider />
-            <LoginModal />
-            <RegisterModal />
-            <SearchModal />
-            <ReservationModal />
-            <ChatModal />
-            <RentModal />
-            <Navbar currentUser={null} />
-          </ClientOnly>
-          <div className="pb-20 pt-28">
-            {children}
-          </div>
+          <LoadingProvider>
+            <ClientOnly>
+              <ToasterProvider />
+              <LoginModal />
+              <RegisterModal />
+              <SearchModal />
+              <ReservationModal />
+              <ChatModal />
+              <RentModal />
+              <Navbar currentUser={null} />
+            </ClientOnly>
+            <div className="pb-20 pt-28 showed-scroll-bar">
+              {children}
+            </div>
+          </LoadingProvider>
         </Provider>
       </body>
     </html>

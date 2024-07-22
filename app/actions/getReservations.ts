@@ -1,44 +1,48 @@
 import mongoose from 'mongoose';
 import Reservation, { IReservation } from "../lib/database/models/reservation.model";
+import Listing, { IListing } from '../lib/database/models/listing.model';
+import getCurrentUser from './getCurrentUser';
 
-interface IParams {
-  listingId?: string;
-  userId?: string;
-  authorId?: string;
+const populateEvent = (query: any) => {
+  return query
+    //.populate({ path: 'organizer', model: User, select: '_id firstName lastName' })
+    .populate(
+      { path: 'reservations', model: Reservation, select: 'listingId' }
+      // Add more populate options if needed
+    )
 }
 
-export default async function getReservations(
-  params: IParams
-) {
+export default async function getReservations() {
   try {
-    const { listingId, userId, authorId } = params;
+    const currentUser = await getCurrentUser();
 
-    const query: any = {};
-
-    if (listingId) {
-      query.listingId = listingId;
-    };
-
-    if (userId) {
-      query.userId = userId;
-    }
-
-    if (authorId) {
-      query['listing.userId'] = authorId; // Assuming the authorId refers to the userId of the listing
-    }
-
-    const reservations = await Reservation.find(query)
-      .populate('listing')
+    // Fetch reservations for the current user
+    const reservations = await Reservation.find({ userId: currentUser._id })
       .sort({ createdAt: 'desc' })
       .exec();
 
-    // Convert Mongoose documents to plain JavaScript objects
-    const plainReservations = reservations.map((reservation) => {
-      return reservation.toObject();
-    });
+    // If no reservations are found, return an empty array
+    if (!reservations || reservations.length === 0) {
+      return [];
+    }
 
-    return plainReservations;
+    // Extract listingIds from the reservations
+    const listingIds = reservations.map((reservation) => reservation.listingId);
+
+    // Fetch listings based on the listingIds
+    const listings = await Listing.find({ _id: { $in: listingIds } }).populate(
+      { path: 'reservations', model: Reservation, select: 'listingId' }
+    );
+
+    // Convert listings to plain JavaScript objects
+    const plainListings = listings.map((listing) => ({
+      ...listing.toObject(),
+      createdAt: listing.createdAt?.toString(),
+    }));
+
+    return plainListings;
   } catch (error: any) {
+    console.log("ERORRR", error)
     throw new Error(error);
   }
 }

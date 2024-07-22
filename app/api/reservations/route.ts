@@ -5,6 +5,7 @@ import Listing from "@/app/lib/database/models/listing.model";
 import { getUserByEmail } from "@/app/actions/user.actions";
 import Reservation from "@/app/lib/database/models/reservation.model";
 import { connectToDatabase } from "@/app/lib/database";
+import User from "@/app/lib/database/models/user.model";
 
 export async function POST(
   request: Request,
@@ -16,21 +17,20 @@ export async function POST(
     endDate,
     totalPrice
   } = body;
-  const _id = listingId;
+
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
     return new NextResponse('Unauthorized', { status: 401 });
   }
 
-  console.log("RESERVE_BODY", body)
-
-  if (!_id || !totalPrice) {
+  if (!listingId || !totalPrice) {
     return new NextResponse('Bad Request', { status: 400 });
   }
 
   const reservationData = {
     userId: currentUser._id,
+    listingId,
     startDate,
     endDate,
     totalPrice
@@ -47,9 +47,9 @@ export async function POST(
 
     // Find the listing document by ID and update it with the reservation ID
 
-    const listingAndReservation = await Listing.findOneAndUpdate({ _id: listingId }, {
-      $addToSet: { reservationIds: reservationId } // Assuming reservations is an array field in the Listing model
-    }, { new: true });
+    const listingAndReservation = await User.findOneAndUpdate(
+      { _id: currentUser._id },
+      { $addToSet: { reservations: reservationId } }, { new: true });
 
     if (!listingAndReservation) {
       return new NextResponse('Not Found', { status: 404 });

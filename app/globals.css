@@ -93,3 +93,124 @@ body,
   cursor: pointer;
   /* Use the pointer cursor on hover */
 }
+
+.gateway-bottom {
+  position: absolute;
+  bottom: 0px;
+  right: 5px;
+  width: 100%;
+  padding: 50px 90px;
+
+}
+
+.gateway-wrapper {}
+
+.gate-icon {
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 5px;
+  margin-bottom: 60px;
+}
+
+.gate-input {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 20px 0px;
+}
+
+.gate-input p {
+  margin-right: 5rem;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.gate-provider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.success-wrapper,
+.cancel-wrapper {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  z-index: 100;
+  /* will-change: transform; */
+  transition: all 1s ease-in-out;
+
+
+}
+
+.success,
+.cancel {
+  width: 100%;
+  margin: 0;
+  background-color: #dcdcdc;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.success .icon {
+  color: green;
+}
+
+.success h2 {
+  text-transform: capitalize;
+  margin-top: 15px 0px;
+  font-weight: 900;
+  font-size: 40px;
+  color: #324d67;
+}
+
+.success .email-msg {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.cancel p {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.success .description {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  margin: 10px;
+  margin-top: 10px;
+}
+
+.success .description .email {
+  margin-left: 5px;
+  color: #f02d34;
+}
+
+.total h3 {
+  font-size: 20px;
+}
+
+.success,
+.cancel {
+  width: 100%;
+  padding: 20px;
+}
+
+.success {
+  height: 100%;
+}
+
+.success h2 {
+  font-size: 17px;
+}

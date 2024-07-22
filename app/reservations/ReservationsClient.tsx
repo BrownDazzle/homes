@@ -10,9 +10,10 @@ import { SafeReservation, SafeUser } from "@/app/types"
 import Heading from "@/app/components/Heading";
 import Container from "@/app/components/Container";
 import ListingCard from "@/app/components/listings/ListingCard";
+import { IListing } from "../lib/database/models/listing.model";
 
 interface ReservationsClientProps {
-  reservations: SafeReservation[],
+  reservations: IListing[],
   currentUser?: SafeUser | null,
 }
 
@@ -61,7 +62,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
         {reservations.map((reservation: any) => (
           <ListingCard
             key={reservation._id}
-            data={reservation.listing}
+            data={reservation}
             reservation={reservation}
             actionId={reservation._id}
             onAction={onCancel}

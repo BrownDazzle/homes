@@ -18,6 +18,7 @@ export interface IReservation extends Document {
 
 const ReservationSchema = new Schema({
   userId: { type: String },
+  listingId: { type: String },
   startDate: { type: Date },
   endDate: { type: Date },
   totalPrice: { type: Number },

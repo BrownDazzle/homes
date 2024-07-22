@@ -1,7 +1,5 @@
 'use client';
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useEffect, useState } from "react";
 import { format } from 'date-fns';
 
@@ -19,6 +17,7 @@ import Sliders from "../sliders";
 import Heading from "../Heading";
 import Badge from "../ui/badge";
 import { CiBadgeDollar } from "react-icons/ci";
+import { useRouter } from "next-nprogress-bar";
 
 interface ListingCardProps {
   data: SafeListing;
@@ -79,7 +78,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <div
-      className="col-span-1 cursor-pointer group shadow-lg rounded-md bg-white"
+      className="col-span-1 cursor-pointer group shadow-lg rounded-md bg-neutral-200"
     >
       <div className="flex flex-col-reverse sm:flex-row-reverse gap-2 w-full h-full">
         <div

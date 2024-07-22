@@ -22,11 +22,10 @@ export default async function ConversationLayout({ children }: { children: React
 
   return (
 
-    <Sidebar currentUser={currentUser}>
-      <div className="h-full">
-        <ConversationList users={users as IUser[]} initialItems={conversations} />
-        {children}
-      </div>
-    </Sidebar>
+    <div className="h-full">
+      <ConversationList users={users as IUser[]} initialItems={conversations} />
+      {children}
+    </div>
+
   );
 }

@@ -8,16 +8,15 @@ const Logo = () => {
 
   return (
     <>
-      <p onClick={() => router.push('/')} className="font-bold text-2xl text-yellow-900 cursor-pointer">Homes.Com</p>
-
-      {/*<Image
-      onClick={() => router.push('/')}
-      className="hidden md:block cursor-pointer" 
-      src="/images/logo.png" 
-      height="100" 
-      width="100" 
-      alt="Logo" 
-  />*/}
+      {/*<p onClick={() => router.push('/')} className="font-bold text-2xl text-yellow-900 cursor-pointer">Homes.Com</p>*/}
+      <Image
+        onClick={() => router.push('/')}
+        className="cursor-pointer"
+        src="/images/logo1.png"
+        height="60"
+        width="60"
+        alt="Logo"
+      />
     </>
   );
 }

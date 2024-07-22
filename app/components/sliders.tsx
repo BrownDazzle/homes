@@ -55,7 +55,7 @@ const Sliders: React.FC<SlidersProps> = ({ banners, speed, slidesToShow, rtl, do
                         className="object-cover w-full h-full"
                         alt="Image"
                     />
-                    <div
+                    {banners.length > 1 && (<div
                         className="
               bg-white
               rounded-full
@@ -67,7 +67,7 @@ const Sliders: React.FC<SlidersProps> = ({ banners, speed, slidesToShow, rtl, do
               "
                     >
                         <HiChevronRight onClick={handleNext} />
-                    </div>
+                    </div>)}
                 </div>
             ))}
 

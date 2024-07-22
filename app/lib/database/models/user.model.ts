@@ -65,6 +65,10 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Message',
   }],
+  reservations: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Reservation',
+  }],
 }, {
   timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }
 });

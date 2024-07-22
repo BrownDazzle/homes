@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import prisma from "@/app/libs/prismadb";
 import Listing from "@/app/lib/database/models/listing.model";
 import { getUserByEmail } from "@/app/actions/user.actions";
 import { handleError } from "@/app/lib/utils";

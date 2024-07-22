@@ -36,7 +36,7 @@ const PropertyInput: React.FC<PropertyInputProps> = ({
       `}
     >
       <Icon size={20} />
-      <p className="font-semibold text-sm">
+      <p className="font-semibold text-sm md:text-md lg:text-1xl">
         {label}
       </p>
     </div>

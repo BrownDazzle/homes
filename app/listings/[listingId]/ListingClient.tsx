@@ -42,20 +42,20 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const { data: session } = useSession();
   const user = session?.user
 
-  const disabledDates = useMemo(() => {
+  /*const disabledDates = useMemo(() => {
     let dates: Date[] = [];
 
     reservations.forEach((reservation: any) => {
       const range = eachDayOfInterval({
-        start: new Date(reservation.startDate),
-        end: new Date(reservation.endDate)
+        start: new Date(reservation?.startDate),
+        end: new Date(reservation?.endDate)
       });
 
       dates = [...dates, ...range];
     });
 
     return dates;
-  }, [reservations]);
+  }, [reservations]);*/
 
   const category = useMemo(() => {
     return categories.find((items) =>
@@ -170,7 +170,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 dateRange={dateRange}
                 onSubmit={onCreateReservation}
                 disabled={isLoading}
-                disabledDates={disabledDates}
+                //disabledDates={disabledDates}
                 locationValue={listing.locationValue as string}
               />
             </div>

@@ -10,6 +10,7 @@ import { SafeUser } from "@/app/types";
 import useCountries from "@/app/hooks/useCountries";
 import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
+import { IListing } from "@/app/lib/database/models/listing.model";
 
 const Map = dynamic(() => import('../Map'), {
   ssr: false
@@ -17,6 +18,7 @@ const Map = dynamic(() => import('../Map'), {
 
 interface ListingReservationProps {
   propertyUserId: string;
+  listing: IListing;
   listingId: string;
   currentUser: SafeUser;
   price: number;
@@ -25,7 +27,7 @@ interface ListingReservationProps {
   onChangeDate: (value: Range) => void;
   onSubmit: () => void;
   disabled?: boolean;
-  disabledDates: Date[];
+  disabledDates?: Date[];
   locationValue: string;
 }
 
@@ -33,6 +35,7 @@ const ListingReservation: React.FC<
   ListingReservationProps
 > = ({
   propertyUserId,
+  listing,
   listingId,
   currentUser,
   price,
@@ -56,8 +59,8 @@ const ListingReservation: React.FC<
 
     const onReserve = useCallback((data: any) => {
       reservationModal.propertyUserId = data.userId;
-      reservationModal.listingId = data.listingId;
-      reservationModal.price = totalPrice;
+      reservationModal.listingId = data._id;
+      reservationModal.price = reservationFee;
       reservationModal.onOpen();
     }, [reservationModal, reservationFee]);
 
@@ -112,7 +115,7 @@ const ListingReservation: React.FC<
           <Button
             disabled={disabled}
             label="Poke Landlord"
-            onClick={() => onReserve({ listingId: listingId, userId: propertyUserId })}
+            onClick={() => onReserve({ listing: listing, userId: propertyUserId })}
           />
         </div>) : null}
       </div>

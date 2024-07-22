@@ -10,7 +10,7 @@ const populateEvent = (query: any) => {
   return query
     //.populate({ path: 'organizer', model: User, select: '_id firstName lastName' })
     .populate(
-      { path: 'user', model: User, select: '_id name image email' }
+      { path: 'user', model: User, select: '_id name image email ' }
       // Add more populate options if needed
     )
 }
@@ -46,6 +46,7 @@ export default async function getListingById(
       isPremium: listing.isPremium,
       premiumTargetDate: listing.premiumTargetDate,
       property_type: listing.property_type,
+      reservations: listing.reservations,
       price: listing.price,
       createdAt: listing.createdAt.toString(),
       user: listing.user

@@ -6,6 +6,8 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import getReservations from "@/app/actions/getReservations";
 
 import TripsClient from "./ReservationsClient";
+import { SafeReservation } from "../types";
+import { IListing } from "../lib/database/models/listing.model";
 
 const ReservationsPage = async () => {
   const currentUser = await getCurrentUser();
@@ -21,7 +23,7 @@ const ReservationsPage = async () => {
     )
   }
 
-  const reservations = await getReservations({ userId: currentUser._id });
+  const reservations = await getReservations();
 
   if (reservations.length === 0) {
     return (

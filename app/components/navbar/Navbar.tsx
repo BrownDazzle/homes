@@ -20,7 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({
     <div className="fixed w-full bg-white z-40 ">
       <div
         className="
-          py-4
+          py-2
         "
       >
         <Container>

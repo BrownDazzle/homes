@@ -205,20 +205,20 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const { data: session } = useSession();
   const user = session?.user;
 
-  const disabledDates = useMemo(() => {
-    let dates: Date[] = [];
-
-    reservations.forEach((reservation: any) => {
-      const range = eachDayOfInterval({
-        start: new Date(reservation.startDate),
-        end: new Date(reservation.endDate)
-      });
-
-      dates = [...dates, ...range];
-    });
-
-    return dates;
-  }, [reservations]);
+  /* const disabledDates = useMemo(() => {
+     let dates: Date[] = [];
+ 
+     reservations.forEach((reservation: any) => {
+       const range = eachDayOfInterval({
+         start: new Date(reservation.startDate),
+         end: new Date(reservation.endDate)
+       });
+ 
+       dates = [...dates, ...range];
+     });
+ 
+     return dates;
+   }, [reservations]);*/
 
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
@@ -387,9 +387,9 @@ const ListingClient: React.FC<ListingClientProps> = ({
                   title="Where is your place located?"
                   subtitle="Help guests find you!"
                 />
-              <PlacesHome />
+                <PlacesHome />
               </div>
-              
+
             </div>
             <div
               className="

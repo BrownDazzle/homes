@@ -30,7 +30,7 @@ const PhoneInput: React.FC<InputProps> = ({
 }) => {
   return (
     <div className="w-full relative">
-      {formatPrice && (
+      {/*formatPrice && (
         <p className="
         text-neutral-700
         absolute
@@ -46,8 +46,8 @@ const PhoneInput: React.FC<InputProps> = ({
             top-5
             left-2
           "
-      />*/
-      )}
+      />
+      )*/}
       <input
         id={id}
         disabled={disabled}
@@ -67,7 +67,7 @@ const PhoneInput: React.FC<InputProps> = ({
           transition
           disabled:opacity-70
           disabled:cursor-not-allowed
-          ${formatPrice ? 'pl-14' : 'pl-4'}
+          ${formatPrice ? 'pl-4' : 'pl-4'}
           ${errors[id] ? 'border-rose-500' : 'border-neutral-300'}
           ${errors[id] ? 'focus:border-rose-500' : 'focus:border-black'}
         `}
