@@ -3,21 +3,22 @@
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import {
+  Controller,
   FieldValues,
   SubmitHandler,
   useForm
 } from 'react-hook-form';
 import dynamic from 'next/dynamic'
 import { useRouter } from "next-nprogress-bar";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import useRentModal from '@/app/hooks/useRentModal';
 
 import Modal from "./Modal";
 import Counter from "../inputs/Counter";
 import CategoryInput from '../inputs/CategoryInput';
-import CountrySelect from "../inputs/CountrySelect";
-import { categories, listingTypes } from '../navbar/Categories';
+import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
+import { categories, listingCategories, listingTypes } from '../navbar/Categories';
 import ImageUpload from '../inputs/ImageUpload';
 import Input from '../inputs/Input';
 import Heading from '../Heading';
@@ -26,7 +27,8 @@ import CountInput from '../inputs/CountInput';
 import { Range } from 'react-date-range';
 import BookingSlot from '../inputs/CountInput';
 import AddressSelect, { AddressSelectValue } from '../inputs/AddressSelect';
-import { District, Province, Town, provinces, provincesNames } from '@/app/data';
+import { AMENITIES_LIST, District, Province, Town, provinces, provincesNames } from '@/app/data';
+import PlacesHome from '../places';
 
 enum STEPS {
   CATEGORY = 0,
@@ -54,6 +56,8 @@ const RentModal = () => {
   const { data: session } = useSession();
   const user = session?.user
 
+  const [location, setLocation] = useState<CountrySelectValue>();
+  //const [compound, setCompound] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
   const [filteredProvince, setFilteredProvince] = useState<Province[]>([]);
   const [filteredDistrict, setFilteredDistrict] = useState<District[]>([]);
@@ -61,7 +65,7 @@ const RentModal = () => {
 
   const [step, setStep] = useState(STEPS.CATEGORY);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState(categories);
+  const [searchResults, setSearchResults] = useState(listingCategories);
   const [selectedProvinceValue, setSelectedProvinceValue] = useState<AddressSelectValue | undefined>(undefined);
   const [selectedDistrictValue, setSelectedDistrictValue] = useState<AddressSelectValue | undefined>(undefined);
   const [selectedValue, setSelectedValue] = useState<AddressSelectValue | undefined>(undefined);
@@ -107,6 +111,7 @@ const RentModal = () => {
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     watch,
     formState: {
@@ -125,6 +130,10 @@ const RentModal = () => {
       price: 1,
       title: '',
       description: '',
+      amenities: AMENITIES_LIST.reduce((acc, amenity) => {
+        acc[amenity] = false;
+        return acc;
+      }, {} as { [key: string]: boolean }),
     }
   });
 
@@ -190,7 +199,10 @@ const RentModal = () => {
   };
 
 
-
+  useEffect(() => {
+    setCustomValue('province', location?.label)
+    setCustomValue('district', location?.label)
+  }, [location])
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -205,15 +217,21 @@ const RentModal = () => {
       return onNext();
     }
 
+    // Convert the amenities object to an array of selected amenities
+    const selectedAmenities = Object.entries(data.amenities)
+      .filter(([key, value]) => value === true)
+      .map(([key, value]) => key);
+    console.log("LISTED_AMENITIES", selectedAmenities)
+
     setIsLoading(true);
 
-    axios.post('/api/listings', { ...data, email: user?.email, user: user })
+    axios.post('/api/listings', { ...data, amenities: selectedAmenities, email: user?.email, user: user })
       .then((res) => {
         toast.success('Listing created!');
         router.push(`/properties/${res.data._id}`)
         router.refresh();
         reset();
-        setStep(STEPS.CATEGORY)
+        // setStep(STEPS.CATEGORY)
         rentModal.onClose();
       })
       .catch((err) => {
@@ -335,33 +353,41 @@ const RentModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Where is your place located?"
-          subtitle="Help guests find you!"
+          title="Where do you wanna go?"
+          subtitle="Find the perfect location!"
         />
-        <AddressSelect
-          value={selectedProvinceValue}
-          placeholder="Province"
-          data={provincesNames}
-          onChange={handleProvinceChange}
-        />
-        <hr />
-        {selectedProvinceValue && selectedProvinceValue.label === filteredProvince[0]?.name && (
-          <AddressSelect
-            value={selectedDistrictValue}
-            placeholder="District"
-            data={filteredProvince[0].districts}
-            onChange={handleDistrictChange}
-          />
-        )}
+        <PlacesHome setLocation={setLocation} />
+        {location && (
+          <div className='px-3'>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="compound">
+              Enter compound
+            </label>
+            <div className="w-full relative">
 
-        <hr />
-        {selectedDistrictValue && selectedDistrictValue.label === filteredDistrict[0]?.name && (
-          <AddressSelect
-            value={selectedValue}
-            placeholder="Township"
-            data={filteredTown}
-            onChange={handleChange}
-          />
+              <input
+                id="compound"
+                placeholder="Enter compound"
+                type="text"
+                className={`
+             peer
+             w-full
+             p-4
+             pt-6 
+             font-light 
+             bg-white 
+             border-2
+             rounded-md
+             outline-none
+             transition
+             disabled:opacity-70
+             disabled:cursor-not-allowed
+           
+           `}
+                onChange={(e) => setCustomValue('compound', e.target.value)}
+              />
+
+            </div>
+          </div>
         )}
       </div>
     );
@@ -371,29 +397,65 @@ const RentModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Share some basics about your place"
-          subtitle="What amenitis do you have?"
+          title="Share basic details about your property"
+          subtitle="What amenities do you have?"
         />
-        <Counter
-          onChange={(value) => setCustomValue('guestCount', value)}
-          value={guestCount}
-          title="Guests"
-          subtitle="How many guests do you allow?"
-        />
+        <div className='grid 
+            grid-cols-1 
+            sm:grid-cols-1 
+            md:grid-cols-2
+            lg:grid-cols-2
+            xl:grid-cols-3
+            2xl:grid-cols-4
+            gap-8 '>
+          {AMENITIES_LIST.map((amenity) => (
+            <div key={amenity} className="flex items-center">
+              <Controller
+                name={`amenities.${amenity}`}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    type="checkbox"
+                    id={amenity}
+                    checked={field.value}
+                    onChange={field.onChange}
+                    ref={field.ref}
+                    className="mr-2"
+                  />
+                )}
+              />
+              <label htmlFor={amenity} className="text-gray-700">
+                {amenity}
+              </label>
+            </div>
+          ))}
+        </div>
         <hr />
+        {category === "Booking" && (
+          <>
+            <Counter
+              onChange={(value) => setCustomValue('guestCount', value)}
+              value={guestCount}
+              title="Guests"
+              subtitle="How many guests do you allow?"
+            />
+            <hr />
+            <Counter
+              onChange={(value) => setCustomValue('bathroomCount', value)}
+              value={bathroomCount}
+              title="Bathrooms"
+              subtitle="How many bathrooms do you have?"
+            />
+            <hr />
+          </>
+        )}
         <Counter
           onChange={(value) => setCustomValue('roomCount', value)}
           value={roomCount}
           title="Rooms"
           subtitle="How many rooms do you have?"
         />
-        <hr />
-        <Counter
-          onChange={(value) => setCustomValue('bathroomCount', value)}
-          value={bathroomCount}
-          title="Bathrooms"
-          subtitle="How many bathrooms do you have?"
-        />
+
       </div>
     )
   }
@@ -441,7 +503,7 @@ const RentModal = () => {
     )
   }
 
-  if (step === STEPS.COUNT) {
+  if (category === "Booking" && step === STEPS.COUNT) {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading

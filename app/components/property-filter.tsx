@@ -1,12 +1,13 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useMemo, useRef, useState } from 'react';
 import CategoryInput from '@/app/components/inputs/CategoryInput';
 import { cn, formUrlQuery, removeKeysFromQuery } from '@/app/lib/utils';
 import { categories } from './navbar/Categories';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import PropertyInput from './inputs/PropertyInput';
+import { useRouter } from 'next-nprogress-bar';
 
 const PropertyFilter = () => {
     const params = useSearchParams();
@@ -23,14 +24,15 @@ const PropertyFilter = () => {
                 key: 'property_type',
                 value: category
             });
+            setActive(category);
         } else {
             newUrl = removeKeysFromQuery({
                 params: params?.toString(),
                 keysToRemove: ['property_type']
             });
+            !category && setActive('');
         }
 
-        setActive(category);
         router.push(newUrl, { scroll: false });
     };
 
@@ -38,7 +40,7 @@ const PropertyFilter = () => {
         if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollBy({
                 left: -200,
-                behavior: 'smooth'
+                behavior: 'smooth',
             });
         }
     };
@@ -54,20 +56,7 @@ const PropertyFilter = () => {
 
     return (
         <div className="relative flex items-center">
-            <div
-                className="
-              bg-yellow-900
-              text-white
-              rounded-full
-              p-2
-            absolute
-            bottom-0
-            left-0
-            cursor-pointer
-          "
-            >
-                <HiChevronLeft onClick={scrollLeft} />
-            </div>
+
             <div
                 ref={scrollContainerRef}
                 className="
@@ -79,6 +68,8 @@ const PropertyFilter = () => {
                     mb-4
                     w-full
                     scroll-smooth
+                    translate
+            duration-600
                 "
             >
                 {categories.map((item) => (
@@ -94,12 +85,28 @@ const PropertyFilter = () => {
             </div>
             <div
                 className="
-              bg-yellow-900
-              text-white
+              bg-white
+              text-yellow-900
+              shadow-lg
               rounded-full
               p-2
             absolute
-            bottom-0
+            bottom-[50%]
+            left-0
+            cursor-pointer
+          "
+            >
+                <HiChevronLeft onClick={scrollLeft} />
+            </div>
+            <div
+                className="
+              bg-white
+              text-yellow-900
+              shadow-lg
+              rounded-full
+              p-2
+            absolute
+            bottom-[50%]
             right-0
             cursor-pointer
           "

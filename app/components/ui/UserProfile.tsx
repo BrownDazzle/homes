@@ -72,7 +72,7 @@ const UserProfile = ({ user, setOpenProfile }: ProfileProps) => {
   ];
 
   return (
-    <div className="nav-item fixed right-1 top-16 bg-white shadow-lg  text-yellow-900  dark:bg-[#42464D] pt-2 px-8 pb-6 rounded-lg sm:w-full md:w-96 h-[90vh] z-[250] overflow-y-scroll showed-scroll-bar">
+    <div className="nav-item fixed right-1 top-16 bg-white shadow-lg  text-yellow-900  dark:bg-[#42464D] pt-2 px-8 pb-6 rounded-lg sm:w-full md:w-96 h-auto z-[250] overflow-y-scroll showed-scroll-bar">
       <div className="flex justify-end items-center">
         <button
           type="button"

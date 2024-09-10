@@ -1,55 +1,54 @@
-'use client';
+"use client";
+import { FC, useState } from 'react';
+import { FaSwimmingPool, FaDumbbell, FaWifi, FaParking, FaSnowflake, FaDog, FaShieldAlt, FaTshirt, FaSpa, FaTableTennis } from 'react-icons/fa';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
-import { useState } from 'react';
-import { FaHouseUser, FaTree, FaCity, FaLeaf } from "react-icons/fa"; // Example icons
-import AmenitiesSelect from './inputs/AmenitiesSelect';
-import estateAmenities from '../data';
-import { IconType } from "react-icons";
+interface AmenitiesProps {
+    amenities: string[];
+}
 
-const iconMap: { [key: string]: IconType } = {
-    "Indoor Amenities": FaHouseUser,
-    "Outdoor Amenities": FaTree,
-    "Community Amenities": FaCity,
-    "Eco-Friendly Amenities": FaLeaf
+const amenitiesIcons: { [key: string]: JSX.Element } = {
+    'Swimming Pool': <FaSwimmingPool />,
+    'Gym': <FaDumbbell />,
+    'WiFi': <FaWifi />,
+    'Parking': <FaParking />,
+    'Air Conditioning': <FaSnowflake />,
+    'Pet Friendly': <FaDog />,
+    '24/7 Security': <FaShieldAlt />,
+    'Laundry Service': <FaTshirt />,
+    'Spa': <FaSpa />,
+    'Tennis Court': <FaTableTennis />,
 };
 
-const AmenitiesList: React.FC = () => {
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+const Amenities: FC<AmenitiesProps> = ({ amenities }) => {
+    const [showAll, setShowAll] = useState(false);
 
-    const handleCategoryClick = (category: string) => {
-        setSelectedCategory(category);
-    };
+    const toggleShowAll = () => setShowAll(!showAll);
+
+    const displayedAmenities = showAll ? amenities : amenities.slice(0, 6);
 
     return (
-        <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Estate Amenities</h1>
-            <div className="grid grid-cols-4 gap-4">
-                {estateAmenities.map((category: any) => (
-                    <AmenitiesSelect
-                        key={category.category}
-                        icon={iconMap[category.category]}
-                        label={category.category}
-                        selected={selectedCategory === category.category}
-                        onClick={handleCategoryClick}
-                    />
-                ))}
+        <>
+            <div className="flex flex-col items-center space-y-4 bg-white translate">
+                <ul className="grid grid-cols-2 gap-4 w-full">
+                    {displayedAmenities.map((amenity, index) => (
+                        <li key={index} className="flex items-center text-gray-700 space-x-2">
+                            {amenitiesIcons[amenity]}
+                            <span>{amenity}</span>
+                        </li>
+                    ))}
+                </ul>
+
             </div>
-            {selectedCategory && (
-                <div className="mt-4">
-                    <h2 className="text-xl font-semibold">{selectedCategory}</h2>
-                    <ul className="list-disc list-inside">
-                        {estateAmenities
-                            .find((category: any) => category.category === selectedCategory)
-                            ?.amenities.map((amenity: any) => (
-                                <li key={amenity.name} className="mt-2">
-                                    <strong>{amenity.name}:</strong> {amenity.features.join(', ')}
-                                </li>
-                            ))}
-                    </ul>
-                </div>
-            )}
-        </div>
+            {amenities.length > 6 ? (
+                <button
+                    onClick={toggleShowAll}
+                    className=" mt-1 text-slate-600 hover:text-slate-800 transition font-semibold "
+                >
+                    {showAll ? (<p className='flex flex-row items-center gap-2 border-b-[3px] border-red-600 '>Show Less <IoIosArrowUp size={24} /></p>) : (<p className='flex flex-row items-center gap-2 border-b-[3px] border-red-600 '>Show More <IoIosArrowDown size={24} /></p>)}
+                </button>) : null}
+        </>
     );
 };
 
-export default AmenitiesList;
+export default Amenities;

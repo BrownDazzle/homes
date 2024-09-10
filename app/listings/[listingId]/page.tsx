@@ -39,6 +39,8 @@ const ListingPage = async ({ params }: IParams) => {
   const reservations = await getReservations();
   const currentUser = await getCurrentUser();
 
+  console.log("LIST_NG", listing)
+
   if (!listing) {
     return (
       <ClientOnly>

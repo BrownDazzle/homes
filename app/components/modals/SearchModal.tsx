@@ -19,6 +19,7 @@ import Heading from '../Heading';
 import AddressSelect, { AddressSelectValue } from '../inputs/AddressSelect';
 import { District, Province, Town, provinces, provincesNames } from '@/app/data';
 import PlacesHome from '../places';
+import Input from '../inputs/Input';
 
 enum STEPS {
   LOCATION = 0,
@@ -33,7 +34,8 @@ const SearchModal = () => {
 
   const [step, setStep] = useState(STEPS.LOCATION);
 
-  const [location, setLocation] = useState<string>();
+  const [location, setLocation] = useState<CountrySelectValue>();
+  const [compound, setCompound] = useState<string>();
   const [guestCount, setGuestCount] = useState(1);
   const [roomCount, setRoomCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
@@ -42,47 +44,6 @@ const SearchModal = () => {
     endDate: new Date(),
     key: 'selection'
   });
-
-  const [filteredProvince, setFilteredProvince] = useState<Province[]>([]);
-  const [filteredDistrict, setFilteredDistrict] = useState<District[]>([]);
-  const [filteredTown, setFilteredTown] = useState<Town[]>([]);
-  const [selectedProvinceValue, setSelectedProvinceValue] = useState<AddressSelectValue | undefined>(undefined);
-  const [selectedDistrictValue, setSelectedDistrictValue] = useState<AddressSelectValue | undefined>(undefined);
-  const [selectedValue, setSelectedValue] = useState<AddressSelectValue | undefined>(undefined);
-
-  const filterProvince = (filtertext: string) => {
-    const province = provinces?.filter(
-      (item: any) => {
-        return filtertext === item.name
-      }
-    );
-    province && setFilteredProvince(province);
-    province && setFilteredDistrict(province[0]?.districts)
-  };
-
-  const filterDistrict = (filtertext: string) => {
-    const district = filteredDistrict?.filter(
-      (item: any) => {
-        return filtertext === item.name
-      }
-    );
-    district && setFilteredTown(district[0].compounds);
-  };
-
-  const handleProvinceChange = (value: AddressSelectValue) => {
-    setSelectedProvinceValue(value);
-    filterProvince(value.label)
-  };
-
-  const handleDistrictChange = (value: AddressSelectValue) => {
-    setSelectedDistrictValue(value);
-    filterDistrict(value.label)
-  };
-
-  const handleChange = (value: AddressSelectValue) => {
-    setSelectedValue(value);
-    setLocation(value.label)
-  };
 
 
   const Map = useMemo(() => dynamic(() => import('../Map'), {
@@ -111,6 +72,7 @@ const SearchModal = () => {
     const updatedQuery: any = {
       ...currentQuery,
       locationValue: location,
+      compound,
       guestCount,
       roomCount,
       bathroomCount
@@ -132,6 +94,7 @@ const SearchModal = () => {
     setStep(STEPS.LOCATION);
     searchModal.onClose();
     router.push(url);
+    setLocation(undefined)
   },
     [
       step,
@@ -168,28 +131,38 @@ const SearchModal = () => {
         title="Where do you wanna go?"
         subtitle="Find the perfect location!"
       />
-      <PlacesHome />
-      <AddressSelect
-        value={selectedProvinceValue}
-        placeholder="Province"
-        data={provincesNames}
-        onChange={handleProvinceChange}
-      />
-      {selectedProvinceValue && selectedProvinceValue.label === filteredProvince[0]?.name && (
-        <AddressSelect
-          value={selectedDistrictValue}
-          placeholder="District"
-          data={filteredProvince[0].districts}
-          onChange={handleDistrictChange}
-        />
-      )}
-      {selectedDistrictValue && selectedDistrictValue.label === filteredDistrict[0]?.name && (
-        <AddressSelect
-          value={selectedValue}
-          placeholder="Township"
-          data={filteredTown}
-          onChange={handleChange}
-        />
+      <PlacesHome setLocation={setLocation} />
+      {location && (
+        <div className='px-3'>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="compound">
+            Enter compound
+          </label>
+          <div className="w-full relative">
+
+            <input
+              id="compound"
+              placeholder="Enter compound"
+              type="text"
+              className={`
+             peer
+             w-full
+             p-4
+             pt-6 
+             font-light 
+             bg-white 
+             border-2
+             rounded-md
+             outline-none
+             transition
+             disabled:opacity-70
+             disabled:cursor-not-allowed
+           
+           `}
+              onChange={(e) => setCompound(e.target.value)}
+            />
+
+          </div>
+        </div>
       )}
     </div>
   )

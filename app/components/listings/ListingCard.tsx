@@ -17,7 +17,11 @@ import Sliders from "../sliders";
 import Heading from "../Heading";
 import Badge from "../ui/badge";
 import { CiBadgeDollar } from "react-icons/ci";
+import { TbBrandStackshare } from "react-icons/tb";
 import { useRouter } from "next-nprogress-bar";
+import LocationHeader from "../ui/location-header";
+import ListingActions from "./ListingActions";
+import { IListing } from "@/app/lib/database/models/listing.model";
 
 interface ListingCardProps {
   data: SafeListing;
@@ -78,50 +82,30 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <div
-      className="col-span-1 cursor-pointer group shadow-lg rounded-md bg-neutral-200"
+      className="relative col-span-1 cursor-pointer group shadow-xs rounded-md bg-transparent"
     >
-      <div className="flex flex-col-reverse sm:flex-row-reverse gap-2 w-full h-full">
+      <div className="flex flex-row-reverse gap-2 w-full h-full">
         <div
           className="
-             
             w-full
             h-full
-            relative 
             overflow-hidden 
             rounded-xl
           "
         >
           <Sliders banners={data?.imageSrc as string[]} speed={500} slidesToShow={1} rtl={false} dots={true} />
-          <div className="
-            absolute
-            top-3
-            right-3
-            w-full
-          ">
-            <HeartButton
-              listingId={data?._id}
-              currentUser={currentUser}
-            />
-          </div>
-          {data?.isPremium && (
-            <div className="absolute top-2 left-2">
-              <Badge label="Premium" icon={CiBadgeDollar} />
-            </div>
-          )}
+          <ListingActions listingId={data._id} currentUser={currentUser as SafeUser} data={data as SafeListing} />
         </div>
         <div onClick={() => router.push(`/listings/${data?._id}`)} className="flex flex-col gap-1 w-full p-2">
-          <Heading
-            title={data?.title as string}
-            subtitle={`${data?.district}, ${data?.compound}`}
-          />
-          <div className="flex flex-col gap-1 pl-2">
+          <LocationHeader location={data} />
+          <div className="flex flex-col pl-2">
             <div className="font-semibold text-lg">
               {data?.property_type}
             </div>
             <div className="font-light font-semibold text-neutral-500">
               {reservationDate || data?.category}
             </div>
-            <div className="flex flex-row items-center gap-1 w-full">
+            <div className="flex flex-col w-full">
               {!reservation && (
                 <div className="font-light">{`${data?.roomCount} Room${data?.roomCount && data?.roomCount > 1 ? "s" : ""}`}</div>
               )}

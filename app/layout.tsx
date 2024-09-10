@@ -18,6 +18,9 @@ import ReservationModal from './components/modals/ReservationModal';
 
 import { Metadata } from 'next';
 import LoadingProvider from './components/modals/Loader';
+import SuggestionModal from './components/modals/SuggestionModal';
+import SuggestionBox from './components/SuggestionBox';
+import ShareModal from './components/modals/ShareModal';
 
 export const metadata: Metadata = {
   title: 'Homes.Com',
@@ -52,6 +55,9 @@ const RootLayout: React.FC<LayoutProps> = ({ children, session }) => {
               <ReservationModal />
               <ChatModal />
               <RentModal />
+              <SuggestionModal />
+              <SuggestionBox />
+              <ShareModal />
               <Navbar currentUser={null} />
             </ClientOnly>
             <div className="pb-20 pt-28 showed-scroll-bar">

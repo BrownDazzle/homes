@@ -35,24 +35,22 @@ const PaymentPage = ({ price, listing, isLoading, register, onSubmit, errors }: 
                 <Image alt="mtn_logo" src="/images/mtn1.png" width={140} height={140} className='object-cover rounded-md' />
             </div>
 
-            <div className="bg-gray-100 p-4 rounded-md mb-8">
+            <div className="bg-gray-100 p-4 rounded-md mb-2">
                 <div className="flex gap-3 w-full total">
                     <h3>Total Price:</h3>
                     <h3>K {price}</h3>
                 </div>
+                <PhoneInput
+                    id="phoneNumber"
+                    label="Enter phone"
+                    formatPrice
+                    type="number"
+                    disabled={isLoading}
+                    register={register}
+                    errors={errors}
+                    required
+                />
             </div>
-
-            <PhoneInput
-                id="phoneNumber"
-                label="Enter phone"
-                formatPrice
-                type="number"
-                disabled={isLoading}
-                register={register}
-                errors={errors}
-                required
-            />
-
             <button
                 className="mt-8 w-full bg-red-500 text-white p-4 rounded-full shadow-md hover:bg-red-600 transition"
                 disabled={isLoading}

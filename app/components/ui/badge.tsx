@@ -10,7 +10,7 @@ interface BadgeProps {
 
 const Badge: React.FC<BadgeProps> = ({ label, icon: Icon, }) => {
     return (
-        <Icon size={30} className="inline-block bg-rose-500 text-white font-semibold text-xs rounded-full shadow-lg" />
+        <Icon className="h-8 w-8 inline-block bg-rose-500 text-white font-semibold text-xs rounded-full shadow-lg" />
     );
 }
 

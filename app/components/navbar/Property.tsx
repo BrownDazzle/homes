@@ -67,8 +67,8 @@ const Property = () => {
                     <div
                         onClick={() => onSelectCategory(c.label)}
                         className={clsx(`
-                    text-sm 
-                    font-semibold 
+                    text-1xl 
+                    font-light 
                     xs:px-2
                     sm:px-3
                     md-px-6 

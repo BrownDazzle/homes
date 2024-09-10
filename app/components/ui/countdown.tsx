@@ -1,12 +1,18 @@
 'use client';
 
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 
 interface CountdownProps {
     targetDate: string; // The target date in ISO format
+    id: string;
 }
 
-const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
+const Countdown: React.FC<CountdownProps> = ({ targetDate, id }) => {
+    const { data: session } = useSession();
+    const user = session?.user;
+
     const calculateTimeLeft = () => {
         const difference = +new Date(targetDate) - +new Date();
         let timeLeft = {
@@ -32,20 +38,39 @@ const Countdown: React.FC<CountdownProps> = ({ targetDate }) => {
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setTimeLeft(calculateTimeLeft());
+            const newTimeLeft = calculateTimeLeft();
+            setTimeLeft(newTimeLeft);
+
+            // If time reaches zero, unpublish the listing
+            if (
+                newTimeLeft.days === 0 &&
+                newTimeLeft.hours === 0 &&
+                newTimeLeft.minutes === 0 &&
+                newTimeLeft.seconds === 0
+            ) {
+                clearInterval(timer); // Stop the timer
+                axios.patch(`/api/properties/${id}/unpremier`, { user })
+                    .then(() => {
+                        console.log('Property unsubscribed successfully');
+                    })
+                    .catch((error) => {
+                        console.error('Failed to unsubscribe the property:', error);
+                    });
+            }
         }, 1000);
 
+        // Cleanup interval on component unmount
         return () => clearInterval(timer);
-    }, [targetDate]);
+    }, [targetDate, id, user]);
 
     return (
-        <div className="flex justify-center items-center space-x-2 sm:space-x-1 md:space-x-4 p-4 bg-white shadow-lg rounded-lg">
+        <div className="flex justify-center items-center space-x-2 sm:space-x-1 md:space-x-2 p-4 bg-white shadow-lg rounded-lg">
             {Object.keys(timeLeft).map((unit) => (
                 <div key={unit} className="text-center">
-                    <div className="text-slate-900 text-2xl font-bold">
+                    <div className="text-slate-900 text-md sm:text-sm md:text-md lg:text-2xl font-bold">
                         {timeLeft[unit as keyof typeof timeLeft]}
                     </div>
-                    <div className="uppercase text-sm sm:text-xs md:text-sm text-gray-300">
+                    <div className="uppercase text-xs sm:text-xs md:text-sm text-gray-300">
                         {unit}
                     </div>
                 </div>

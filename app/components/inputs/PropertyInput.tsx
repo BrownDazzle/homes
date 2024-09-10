@@ -1,16 +1,17 @@
 'use client';
 
+import Image from "next/image";
 import { IconType } from "react-icons";
 
 interface PropertyInputProps {
-  icon: IconType,
+  icon: string;
   label: string;
   selected?: boolean;
   onClick: (value: string) => void;
 }
 
 const PropertyInput: React.FC<PropertyInputProps> = ({
-  icon: Icon,
+  icon,
   label,
   selected,
   onClick
@@ -21,22 +22,42 @@ const PropertyInput: React.FC<PropertyInputProps> = ({
       className={`
         rounded-xl
         border-2
-        w-full
-        px-4
+        w-[100px]
+        h-[140px]
+        px-1
         py-2
+        relative
         flex
         justify-center
-        items-center
+        items-start
         gap-3
         text-yellow-900
         hover:border-neutral-200
         transition
         cursor-pointer
-        ${selected ? 'border-neutral-200 bg-neutral-200 text-white' : 'border-neutral-200'}
+        overflow-hidden
       `}
     >
-      <Icon size={20} />
-      <p className="font-semibold text-sm md:text-md lg:text-1xl">
+      <Image
+        alt="property type_image"
+        src={icon}
+        fill
+      />
+      <p className={`
+        absolute 
+        bottom-3 
+        font-semibold 
+        text-xs 
+        bg-slate-200 
+        px-2 py-1 
+        rounded-md 
+        max-w-full 
+        text-center 
+        ${selected ? 'bg-yellow-800 text-white' : 'border-neutral-200'}
+        overflow-hidden 
+        text-ellipsis 
+        whitespace-nowrap
+      `}>
         {label}
       </p>
     </div>
@@ -44,3 +65,4 @@ const PropertyInput: React.FC<PropertyInputProps> = ({
 }
 
 export default PropertyInput;
+

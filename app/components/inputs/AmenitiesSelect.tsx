@@ -20,10 +20,13 @@ const AmenitiesSelect: React.FC<AmenitiesSelectProps> = ({
         <div
             onClick={() => onClick(label)}
             className={`
+                w-full
         rounded-xl
         border-2
-        p-4
+        p-2
         flex
+        justify-center
+        items-center
         flex-col
         gap-3
         hover:border-black
@@ -32,10 +35,10 @@ const AmenitiesSelect: React.FC<AmenitiesSelectProps> = ({
         ${selected ? 'border-black' : 'border-neutral-200'}
       `}
         >
-            <Icon size={30} />
-            <div className="font-semibold">
+            <Icon size={24} />
+            <p className="font-light sm:text-sm md:text-lg lg:text-xl px-1">
                 {label}
-            </div>
+            </p>
         </div>
     );
 };

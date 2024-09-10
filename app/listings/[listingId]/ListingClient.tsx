@@ -5,13 +5,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Range } from "react-date-range";
 import { useRouter } from "next/navigation";
-import { differenceInDays, eachDayOfInterval } from 'date-fns';
+import { differenceInDays, eachDayOfInterval, isValid } from 'date-fns';
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { CreateUserParams, SafeListing, SafeReservation, SafeUser } from "@/app/types";
 
 import Container from "@/app/components/Container";
-import { categories } from "@/app/components/navbar/Categories";
+import { categories, listingCategories } from "@/app/components/navbar/Categories";
 import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
@@ -40,25 +40,33 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const loginModal = useLoginModal();
   const router = useRouter();
   const { data: session } = useSession();
-  const user = session?.user
+  const user = session?.user;
 
-  /*const disabledDates = useMemo(() => {
+  console.log("LIST_NG", listing)
+
+  const disabledDates = useMemo(() => {
     let dates: Date[] = [];
 
-    reservations.forEach((reservation: any) => {
-      const range = eachDayOfInterval({
-        start: new Date(reservation?.startDate),
-        end: new Date(reservation?.endDate)
-      });
+    reservations.forEach((reservation: SafeReservation) => {
+      const startDate = new Date(reservation?.startDate);
+      const endDate = new Date(reservation?.endDate);
 
-      dates = [...dates, ...range];
+      // Ensure both dates are valid and that startDate is before or equal to endDate
+      if (isValid(startDate) && isValid(endDate) && startDate <= endDate) {
+        const range = eachDayOfInterval({
+          start: startDate,
+          end: endDate,
+        });
+
+        dates = [...dates, ...range];
+      }
     });
 
     return dates;
-  }, [reservations]);*/
+  }, [reservations]);
 
   const category = useMemo(() => {
-    return categories.find((items) =>
+    return listingCategories.find((items) =>
       items.label === listing.property_type);
   }, [listing.property_type]);
 
@@ -121,7 +129,8 @@ const ListingClient: React.FC<ListingClientProps> = ({
         className="
           max-w-screen-lg 
           mx-auto
-          pt-20
+          sm:pt-20
+          md:pt-10
         "
       >
         <div className="flex flex-col gap-6">
@@ -132,6 +141,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             compound={listing.compound}
             id={listing._id}
             currentUser={user as SafeUser}
+            locationValue={listing.locationValue as string}
           />
           <div
             className="
@@ -143,13 +153,17 @@ const ListingClient: React.FC<ListingClientProps> = ({
             "
           >
             <ListingInfo
-              user={listing.user}
+              user={user as SafeUser}
+              listingId={listing._id}
               category={category}
               property_type={listing.property_type as string}
               description={listing.description as string}
               roomCount={listing.roomCount as number}
               guestCount={listing.guestCount as number}
               bathroomCount={listing.bathroomCount as number}
+              amenities={listing.amenities as string[]}
+              onChangeDate={(value) => setDateRange(value)}
+              dateRange={dateRange}
               locationValue={listing.locationValue as string}
             />
             <div
@@ -161,6 +175,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
               "
             >
               <ListingReservation
+                listing={listing}
                 propertyUserId={listing.user._id}
                 listingId={listing._id}
                 currentUser={currentUser as SafeUser}
@@ -170,8 +185,9 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 dateRange={dateRange}
                 onSubmit={onCreateReservation}
                 disabled={isLoading}
-                //disabledDates={disabledDates}
+                disabledDates={disabledDates}
                 locationValue={listing.locationValue as string}
+                category={listing.category as string}
               />
             </div>
           </div>

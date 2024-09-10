@@ -75,7 +75,7 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import { formUrlQuery, removeKeysFromQuery } from '@/app/lib/utils';
 import LocationDropdown from "../ui/location-dropdown";
 
-export const categories = [
+export const listingCategories = [
   {
     label: 'Single',
     icon: FaHome,
@@ -118,422 +118,157 @@ export const categories = [
   },
   {
     label: 'Villa',
-    icon: MdOutlineVilla,
+    icon: FaBuilding,
     description: 'This property is a villa.',
   },
   {
     label: 'Bungalow',
-    icon: MdBungalow,
+    icon: FaBuilding,
     description: 'This property is a bungalow.',
   },
   {
     label: 'Mansion',
-    icon: GiCastle,
+    icon: FaBuilding,
     description: 'This property is a mansion.',
   },
   {
     label: 'Cottage',
-    icon: MdCottage,
+    icon: FaBuilding,
     description: 'This property is a cottage.',
   },
   {
     label: 'Penthouse',
-    icon: FaBed,
+    icon: FaBuilding,
     description: 'This property is a penthouse.',
   },
   {
     label: 'Studio',
-    icon: FaBed,
+    icon: FaBuilding,
     description: 'This property is a studio apartment.',
   },
   {
     label: 'Loft',
-    icon: FaBed,
+    icon: FaBuilding,
     description: 'This property is a loft.',
   },
   {
     label: 'Mobile',
-    icon: FaWarehouse,
+    icon: FaBuilding,
     description: 'This property is a mobile home.',
   },
   {
     label: 'Farmhouse',
-    icon: GiFarmer,
+    icon: FaBuilding,
     description: 'This property is a farmhouse.',
   },
   {
     label: 'Log Cabin',
-    icon: GiWoodCabin,
+    icon: FaBuilding,
     description: 'This property is a log cabin.',
   },
+
+];
+
+export const categories = [
   {
-    label: 'Castle',
-    icon: GiCastle,
-    description: 'This property is a castle.',
+    label: 'Single',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a single-family home.',
   },
   {
-    label: 'Chalet',
-    icon: FaMountain,
-    description: 'This property is a chalet.',
+    label: 'Condominium',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a condominium (condo).',
   },
   {
-    label: 'Estate',
-    icon: GiTombstone,
-    description: 'This property is an estate.',
+    label: 'Townhouse',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a townhouse.',
   },
   {
-    label: 'Beach',
-    icon: GiBeachBall,
-    description: 'This property is a beach house.',
+    label: 'Apartment',
+    icon: '/images/est_2.jpg',
+    description: 'This property is an apartment.',
   },
   {
-    label: 'Lake',
-    icon: FcDam,
-    description: 'This property is a lake house.',
+    label: 'Duplex',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a duplex.',
   },
   {
-    label: 'Mountain Cabin',
-    icon: GiMountainCave,
-    description: 'This property is a mountain cabin.',
+    label: 'Triplex',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a triplex.',
   },
   {
-    label: 'Semi-Detached',
-    icon: FaBuilding,
-    description: 'This property is a semi-detached house.',
+    label: 'Quadruplex',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a quadruplex.',
   },
   {
-    label: 'Detached',
-    icon: FaBuilding,
-    description: 'This property is a detached house.',
+    label: 'Family',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a multi-family home.',
   },
   {
-    label: 'Tiny',
-    icon: GiSmallFire,
-    description: 'This property is a tiny house.',
+    label: 'Villa',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a villa.',
   },
   {
-    label: 'Earthship',
-    icon: GiShipWheel,
-    description: 'This property is an earthship.',
+    label: 'Bungalow',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a bungalow.',
   },
   {
-    label: 'Floating',
-    icon: MdHouseboat,
-    description: 'This property is a floating home.',
+    label: 'Mansion',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a mansion.',
   },
   {
-    label: 'Igloo',
-    icon: GiIgloo,
-    description: 'This property is an igloo.',
+    label: 'Cottage',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a cottage.',
   },
   {
-    label: 'Treehouse',
-    icon: GiTreehouse,
-    description: 'This property is a treehouse.',
+    label: 'Penthouse',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a penthouse.',
   },
   {
-    label: 'Houseboat',
-    icon: MdHouseboat,
-    description: 'This property is a houseboat.',
+    label: 'Studio',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a studio apartment.',
   },
   {
-    label: 'Carriage',
-    icon: FaBabyCarriage,
-    description: 'This property is a carriage house.',
+    label: 'Loft',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a loft.',
   },
   {
-    label: 'Dome',
-    icon: GiBaseDome,
-    description: 'This property is a dome home.',
+    label: 'Mobile',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a mobile home.',
   },
   {
-    label: 'Geodesic Dome',
-    icon: GiBaseDome,
-    description: 'This property is a geodesic dome.',
+    label: 'Farmhouse',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a farmhouse.',
   },
   {
-    label: 'Prefabricated',
-    icon: GiFactory,
-    description: 'This property is a prefabricated home.',
+    label: 'Log Cabin',
+    icon: '/images/est_2.jpg',
+    description: 'This property is a log cabin.',
   },
-  {
-    label: 'Container',
-    icon: TbContainer,
-    description: 'This property is a container home.',
-  },
-  {
-    label: 'Underground',
-    icon: GiUndergroundCave,
-    description: 'This property is an underground home.',
-  },
-  {
-    label: 'A-Frame',
-    icon: GiWoodCabin,
-    description: 'This property is an A-frame house.',
-  },
-  {
-    label: 'Farm',
-    icon: GiFarmTractor,
-    description: 'This property is a farm.',
-  },
-  {
-    label: 'Ranchette',
-    icon: GiCow,
-    description: 'This property is a ranchette.',
-  },
-  {
-    label: 'Plantation',
-    icon: GiPlantWatering,
-    description: 'This property is a plantation.',
-  },
-  {
-    label: 'Vineyard',
-    icon: GiGrapes,
-    description: 'This property is a vineyard.',
-  },
-  {
-    label: 'Orchard',
-    icon: GiAppleMaggot,
-    description: 'This property is an orchard.',
-  },
-  {
-    label: 'Ranch',
-    icon: GiCow,
-    description: 'This property is a ranch.',
-  },
-  {
-    label: 'Horse Property',
-    icon: GiHorseHead,
-    description: 'This property is a horse property.',
-  },
-  {
-    label: 'Equestrian Estate',
-    icon: GiHorseshoe,
-    description: 'This property is an equestrian estate.',
-  },
-  {
-    label: 'Agricultural Land',
-    icon: GiCultist,
-    description: 'This property is agricultural land.',
-  },
-  {
-    label: 'Timberland',
-    icon: GiForest,
-    description: 'This property is timberland.',
-  },
-  {
-    label: 'Hunting Land',
-    icon: GiHunterEyes,
-    description: 'This property is hunting land.',
-  },
-  {
-    label: 'Waterfront Property',
-    icon: GiBuoy,
-    description: 'This property is waterfront property.',
-  },
-  {
-    label: 'Beachfront Property',
-    icon: GiBeachBall,
-    description: 'This property is beachfront property.',
-  },
-  {
-    label: 'Lakefront Property',
-    icon: GiFlake,
-    description: 'This property is lakefront property.',
-  },
-  {
-    label: 'Riverfront Property',
-    icon: GiCrackedAlienSkull,
-    description: 'This property is riverfront property.',
-  },
-  {
-    label: 'Island Property',
-    icon: GiIsland,
-    description: 'This property is island property.',
-  },
-  {
-    label: 'Urban Property',
-    icon: FaCity,
-    description: 'This property is urban property.',
-  },
-  {
-    label: 'Suburban Property',
-    icon: FaCity,
-    description: 'This property is suburban property.',
-  },
-  {
-    label: 'Rural Property',
-    icon: GiWheat,
-    description: 'This property is rural property.',
-  },
-  {
-    label: 'Commercial Property',
-    icon: FaWarehouse,
-    description: 'This property is commercial property.',
-  },
-  {
-    label: 'Office Building',
-    icon: FaBuilding,
-    description: 'This property is an office building.',
-  },
-  {
-    label: 'Retail Space',
-    icon: FaShoppingBag,
-    description: 'This property is retail space.',
-  },
-  {
-    label: 'Warehouse',
-    icon: FaWarehouse,
-    description: 'This property is a warehouse.',
-  },
-  {
-    label: 'Industrial Property',
-    icon: FaIndustry,
-    description: 'This property is industrial property.',
-  },
-  {
-    label: 'Mixed-Use Property',
-    icon: FaHandHoldingUsd,
-    description: 'This property is mixed-use property.',
-  },
-  {
-    label: 'Hotel',
-    icon: FaHotel,
-    description: 'This property is a hotel.',
-  },
-  {
-    label: 'Resort',
-    icon: FaHotel,
-    description: 'This property is a resort.',
-  },
-  {
-    label: 'Motel',
-    icon: FaHotel,
-    description: 'This property is a motel.',
-  },
-  {
-    label: 'Bed and Breakfast (B&B)',
-    icon: FaBed,
-    description: 'This property is a bed and breakfast (B&B).',
-  },
-  {
-    label: 'Vacation Rental',
-    icon: FaBed,
-    description: 'This property is a vacation rental.',
-  },
-  {
-    label: 'Student Housing',
-    icon: FaUniversity,
-    description: 'This property is student housing.',
-  },
-  {
-    label: 'Senior Housing',
-    icon: FaBuilding,
-    description: 'This property is senior housing.',
-  },
-  {
-    label: 'Nursing',
-    icon: FaHospitalAlt,
-    description: 'This property is a nursing home.',
-  },
-  {
-    label: 'Hospital',
-    icon: FaHospital,
-    description: 'This property is a hospital.',
-  },
-  {
-    label: 'School',
-    icon: FaSchool,
-    description: 'This property is a school building.',
-  },
-  {
-    label: 'Church',
-    icon: FaChurch,
-    description: 'This property is a church.',
-  },
-  {
-    label: 'Temple',
-    icon: FaPlaceOfWorship,
-    description: 'This property is a temple.',
-  },
-  {
-    label: 'Mosque',
-    icon: FaMosque,
-    description: 'This property is a mosque.',
-  },
-  {
-    label: 'Synagogue',
-    icon: FaSynagogue,
-    description: 'This property is a synagogue.',
-  },
-  {
-    label: 'Community',
-    icon: TbBuildingCommunity,
-    description: 'This property is a community center.',
-  },
-  {
-    label: 'Gym',
-    icon: FaDumbbell,
-    description: 'This property is a gym.',
-  },
-  {
-    label: 'Stadium',
-    icon: MdStadium,
-    description: 'This property is a stadium.',
-  },
-  {
-    label: 'Arena',
-    icon: MdStadium,
-    description: 'This property is an arena.',
-  },
-  {
-    label: 'Parking/Garage',
-    icon: FaCar,
-    description: 'This property is a parking lot/garage.',
-  },
-  {
-    label: 'Land (Vacant)',
-    icon: FaLandmark,
-    description: 'This property is vacant land.',
-  },
-  {
-    label: 'Residential',
-    icon: FaLandmark,
-    description: 'This property is a residential lot.',
-  },
-  {
-    label: 'Commercial',
-    icon: FaLandmark,
-    description: 'This property is a commercial lot.',
-  },
-  {
-    label: 'Industrial',
-    icon: FaLandmark,
-    description: 'This property is an industrial lot.',
-  },
-  {
-    label: 'Farmland',
-    icon: GiFarmTractor,
-    description: 'This property is farmland.',
-  },
-  {
-    label: 'Wooded',
-    icon: FaTree,
-    description: 'This property is a wooded lot.',
-  },
-  {
-    label: 'Coastal',
-    icon: FaWater,
-    description: 'This property is coastal land.',
-  },
+
 ];
 
 export const listingTypes = [
-  {
+  /*{
     label: 'Booking',
     icon: MdStadium,
     description: 'This property is listed for bookings!',
-  },
+  },*/
   {
     label: 'Rental',
     icon: FaLandmark,

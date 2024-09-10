@@ -11,6 +11,9 @@ import FilterIndex from "./components/filters/Index";
 import OfferList from "./components/Offer";
 import Heading from "./components/Heading";
 import PropertyFilter from "./components/property-filter";
+import SuggestionBox from "./components/SuggestionBox";
+import Map from "./components/Map";
+import NearProperty from "./components/near-property";
 
 interface HomeProps {
   searchParams: IListingsParams
@@ -34,11 +37,16 @@ const Home = async ({ searchParams }: HomeProps) => {
   return (
     <ClientOnly>
       <Container>
+
+        <div className="lg:pt-5">
+          <Heading title="" subtitle="View properties close to your current location" />
+          <NearProperty />
+        </div>
+        <Heading title="" subtitle="Filter by property type" />
+        <PropertyFilter />
         <div className="lg:pt-5 pb-10">
           <OfferList data={premiumlisting} />
         </div>
-        <Heading title="Property Types" subtitle="Filter by property type" />
-        <PropertyFilter />
         <div
           className="
           pt-5
@@ -53,7 +61,6 @@ const Home = async ({ searchParams }: HomeProps) => {
           
           "
         >
-
           {listings.map((listing: any) => (
             <ListingCard
               currentUser={currentUser}

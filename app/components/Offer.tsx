@@ -4,8 +4,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Image from "next/image";
-import { useRef } from "react";
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef } from "react";
+import { useSearchParams } from 'next/navigation';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
 import useCountries from "@/app/hooks/useCountries";
@@ -16,6 +16,9 @@ import Countdown from './ui/countdown';
 import { IListing } from '../lib/database/models/listing.model';
 import Badge from './ui/badge';
 import { CiBadgeDollar } from 'react-icons/ci';
+import { useRouter } from 'next-nprogress-bar';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 interface OfferListProps {
   data: IListing[]
@@ -56,7 +59,7 @@ const OfferList = ({ data }: OfferListProps) => {
   return (
     <>
       <Heading
-        title="Offers"
+        title=""
         subtitle="Promotions, deals, and special offers for you"
       />
       <Slider ref={sliderRef} {...settings}>
@@ -64,9 +67,12 @@ const OfferList = ({ data }: OfferListProps) => {
           <div
             className="
                 w-full
-                h-[60vh]
+                h-[40vh]
+                sm:h-[40vh]
+                md:h-[50vh]
+                lg:h-[60vh]
                 overflow-hidden 
-                rounded-xl
+                rounded-md
                 relative
               "
             key={index}
@@ -85,7 +91,7 @@ const OfferList = ({ data }: OfferListProps) => {
                   left-5
                 "
             >
-              <Countdown targetDate={banner.premiumTargetDate.toISOString()} />
+              <Countdown targetDate={banner.premiumTargetDate.toISOString()} id={banner._id} />
             </div>
             {banner.isPremium && (
               <div className="absolute top-2 left-2">
@@ -109,14 +115,16 @@ const OfferList = ({ data }: OfferListProps) => {
             </div>
             <div
               className="
+              md:hidden
+                  xs:block
                   absolute
-                  bottom-5
+                  bottom-12
                   left-5
                 "
             >
               <Heading
-                title={banner.title as string}
-                subtitle={banner.description}
+                title={banner.compound as string}
+                subtitle={`${banner.district}, ${banner.province}`}
               />
             </div>
             <div
@@ -125,7 +133,7 @@ const OfferList = ({ data }: OfferListProps) => {
               rounded-full
               p-2
               absolute
-              bottom-[50%]
+              bottom-[5%]
               left-5
               cursor-pointer
               "
@@ -138,7 +146,7 @@ const OfferList = ({ data }: OfferListProps) => {
               rounded-full
               p-2
               absolute
-              bottom-[50%]
+              bottom-[5%]
               right-5
               cursor-pointer
               "

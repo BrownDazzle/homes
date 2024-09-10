@@ -20,7 +20,48 @@ export interface District {
 export interface Province {
     name: string;
     districts: District[];
+};
+
+export interface PropertyType {
+    id: string;
+    title: string;
+    description: string;
+    imageUrl: string;
 }
+
+export const AMENITIES_LIST = [
+    'WiFi',
+    'Air Conditioning',
+    'Swimming Pool',
+    'Gym',
+    'Parking',
+    'Pet Friendly',
+    'Washer/Dryer',
+];
+
+
+export const propertyTypes: PropertyType[] = [
+    {
+        id: 'house',
+        title: 'House',
+        description: 'Beautiful houses in various locations.',
+        imageUrl: '/images/est_3.jpg',
+    },
+    {
+        id: 'farm',
+        title: 'Farm',
+        description: 'Spacious farms with modern facilities.',
+        imageUrl: '/images/est_5.jpg',
+    },
+    {
+        id: 'apartment',
+        title: 'Apartment',
+        description: 'Modern apartments in urban areas.',
+        imageUrl: '/images/est_1.jpg',
+    },
+    // Add more property types as needed
+];
+
 
 export const networkTypes = [
     {
@@ -41,11 +82,11 @@ export const networkTypes = [
 ]
 
 export const categoryTypes = [
-    {
+    /*{
         label: 'Booking',
         icon: MdStadium,
         description: 'This property is listed for bookings!',
-    },
+    },*/
     {
         label: 'Rental',
         icon: FaLandmark,
@@ -58,9 +99,22 @@ export const categoryTypes = [
     },
 ]
 
+export const amenities = [
+    'Swimming Pool',
+    'Gym',
+    'WiFi',
+    'Parking',
+    'Air Conditioning',
+    'Pet Friendly',
+    '24/7 Security',
+    'Laundry Service',
+    'Spa',
+    'Tennis Court',
+];
+
 const estateAmenities = [
     {
-        category: "Indoor Amenities",
+        category: "Indoor",
         amenities: [
             {
                 name: "Gourmet Kitchen",
@@ -144,7 +198,7 @@ const estateAmenities = [
         ]
     },
     {
-        category: "Outdoor Amenities",
+        category: "Outdoor",
         amenities: [
             {
                 name: "Swimming Pool",
@@ -211,7 +265,7 @@ const estateAmenities = [
         ]
     },
     {
-        category: "Community Amenities",
+        category: "Community",
         amenities: [
             {
                 name: "Clubhouse",
@@ -249,7 +303,7 @@ const estateAmenities = [
         ]
     },
     {
-        category: "Eco-Friendly Amenities",
+        category: "Eco-Friendly",
         amenities: [
             {
                 name: "Energy Efficiency",

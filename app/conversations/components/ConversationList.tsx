@@ -77,13 +77,13 @@ export default function ConversationList({ initialItems, users }: ConversationLi
       />
       <aside
         className={clsx(
-          `fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto border-r border-gray-200 bg-[#fff]`,
-          isOpen ? "hidden" : "block w-full left-0 pt-50"
+          `fixed bg-red-500 rounded-lg inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto border-r border-gray-200 bg-[#fff]`,
+          isOpen ? "hidden" : "block w-full left-0 pt-0"
         )}
       >
         <div className="px-5 pt-32">
           <div className="flex justify-between mb-4 pt-4">
-            <div className="text-2xl font-bold text-neutral-900">Messages</div>
+            <div className="text-2xl font-bold text-neutral-100">Messages</div>
             <div
               className="rounded-full p-2 bg-gray-100 text-gray-600 cursor-pointer hover:opacity-75 transition"
               onClick={() => setIsModalOpen(true)}

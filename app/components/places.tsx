@@ -1,12 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import Map from '../components/Map';
 import { getDistricts, getProvinces, getTowns } from '../lib/utils';
 import { ICity, IState } from 'countries-states-cities';
 import CountrySelect, { CountrySelectValue } from './inputs/CountrySelect';
+import Input from './inputs/Input';
 
-const PlacesHome: React.FC = () => {
+interface LocationProps {
+    setLocation: Dispatch<SetStateAction<CountrySelectValue | undefined>>;
+}
+
+const PlacesHome = ({ setLocation }: LocationProps) => {
     const [provinces, setProvinces] = useState<IState[]>([]);
     const [districts, setDistricts] = useState<ICity[]>([]);
     const [selectedProvince, setSelectedProvince] = useState<CountrySelectValue | undefined>(undefined);
@@ -40,6 +45,7 @@ const PlacesHome: React.FC = () => {
 
     const handleDistrictChange = (value: CountrySelectValue | undefined) => {
         setSelectedDistrict(value);
+        setLocation(value)
     };
 
     return (
@@ -79,7 +85,10 @@ const PlacesHome: React.FC = () => {
                 </div>
             )}
             {selectedDistrict && selectedDistrict.latlng && (
-                <Map center={[Number(selectedDistrict.latlng[0]), Number(selectedDistrict.latlng[1])]} />
+                <div className='flex flex-col gap-2'>
+                    <Map center={[Number(selectedDistrict.latlng[0]), Number(selectedDistrict.latlng[1])]} />
+
+                </div>
             )}
         </div>
     );

@@ -30,6 +30,7 @@ export interface IListing extends Document {
   costRange: string;
   userId: Schema.Types.ObjectId;
   price?: number;
+  amenities?: string[];
   reservationIds?: string[];
   user?: Schema.Types.ObjectId | IUser; // Reference to IUser
   reservations?: [Schema.Types.ObjectId | IReservation];
@@ -65,7 +66,9 @@ const ListingSchema = new Schema({
   reservationIds: [{
     type: String
   }],
-
+  amenities: [{
+    type: String
+  }],
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   reservations: [{ type: Schema.Types.ObjectId, ref: 'Reservation' }],
 })

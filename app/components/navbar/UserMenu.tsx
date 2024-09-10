@@ -3,7 +3,6 @@
 import { useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
@@ -18,6 +17,9 @@ import { RiArrowDropDownFill } from "react-icons/ri";
 import useChatModal from "@/app/hooks/useChatModal";
 import Button from "../Button";
 import UserProfile from "@/app/components/ui/UserProfile"
+import { BsThreeDotsVertical } from "react-icons/bs";
+import Menu from "../ui/Menu";
+import { useRouter } from "next-nprogress-bar";
 
 interface UserMenuProps {
   CurrentUser?: SafeUser | null
@@ -36,10 +38,19 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const chatModal = useChatModal();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenu, setIsMenu] = useState(false);
+
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
+    setIsMenu(false);
   }, []);
+
+  const toggleMenu = useCallback(() => {
+    setIsMenu((value) => !value);
+    setIsOpen(false);
+  }, []);
+
 
   const onRent = useCallback(() => {
     if (!user) {
@@ -100,6 +111,7 @@ transition
             <Avatar src={user?.image as string} />
             <RiArrowDropDownFill />
           </div>
+
         </div>) : (<div
 
           className="
@@ -121,6 +133,9 @@ transition
           <Button label="SignIn" small={true} onClick={() => signIn("google")} />
         </div>
         )}
+        <div onClick={toggleMenu} className="flex flex-row items-center">
+          <BsThreeDotsVertical size={24} />
+        </div>
 
       </div>
       {isOpen && (
@@ -141,6 +156,27 @@ transition
         >
           <div className="flex flex-col cursor-pointer">
             {user ? <UserProfile user={user as CreateUserParams} setOpenProfile={setIsOpen} /> : null}
+          </div>
+        </div>
+      )}
+      {isMenu && (
+        <div
+          className="
+            absolute 
+            rounded-xl 
+            shadow-md
+            w-[40vw]
+            md:w-3/4 
+            bg-white 
+            overflow-hidden 
+            right-0 
+            top-12 
+            text-sm
+            z-50
+          "
+        >
+          <div className="flex flex-col cursor-pointer">
+            {user ? <Menu user={user as CreateUserParams} setOpenProfile={setIsMenu} /> : null}
           </div>
         </div>
       )}

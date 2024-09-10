@@ -79,29 +79,34 @@ const Dropdown: React.FC = () => {
     }
 
     return (
-        <Container>
-            <div
-                className="
-                    lg:border-[1px] 
+
+        <div
+            className="    
                     w-full 
-                    h-full
-                    rounded-none
-                    md:rounded-full 
-                    shadow-sm 
-                    hover:shadow-md 
+                    h-full      
                     transition 
                     cursor-pointer
                     overflow-hidden
                     bg-white
+                    max-w-[2520px]
+        mx-auto
+        xl:px-20 
+        md:px-10
+        sm:px-2
+        px-4
                 "
-            >
-                <div
-                    className="
+        >
+            <div
+                className="
+                
                     block
                     xl:hidden
               bg-yellow-900
               text-white
-              rounded-full
+               rounded-none
+                    md:rounded-full 
+                    shadow-sm 
+                    hover:shadow-md 
               p-2
             absolute
             bottom-8
@@ -110,12 +115,12 @@ const Dropdown: React.FC = () => {
             xl:left-3
             cursor-pointer
           "
-                >
-                    <HiChevronLeft onClick={scrollLeft} />
-                </div>
-                <div
-                    ref={scrollContainerRef}
-                    className="
+            >
+                <HiChevronLeft onClick={scrollLeft} />
+            </div>
+            <div
+                ref={scrollContainerRef}
+                className="
                         w-full
                         h-full
                         flex 
@@ -124,17 +129,19 @@ const Dropdown: React.FC = () => {
                         justify-between
                         overflow-x-auto
                        hide-scroll-bar
+                       lg:border-[1px]
+                       rounded-full
                     "
-                >
-                    {provinces.map((province) => (
+            >
+                {provinces.map((province) => (
+                    <div
+                        key={province.name}
+                        className="w-full sm:py-1 md:py-2 hover:bg-white hover:text-slate-900 text-yellow-900 cursor-pointer border-r-[0.5px] border-neutral-200"
+                        onMouseEnter={() => handleMouseEnter(province)}
+                        onMouseLeave={handleMouseLeave}
+                    >
                         <div
-                            key={province.name}
-                            className="w-full sm:py-1 md:py-2 hover:bg-white hover:text-slate-900 text-yellow-900 cursor-pointer border-r-[0.5px] border-neutral-200"
-                            onMouseEnter={() => handleMouseEnter(province)}
-                            onMouseLeave={handleMouseLeave}
-                        >
-                            <div
-                                className="
+                            className="
                                     relative 
                                     cursor-pointer
                                     items-center
@@ -146,44 +153,44 @@ const Dropdown: React.FC = () => {
                                     transition
                                     z-5
                                 "
-                            >
-                                <span className='flex flex-row w-full text-sm font-semibold sm:text-xs md:text-sm lg:text-sm'>{province.name}</span>
-                                <ChevronDown size={12} />
-                            </div>
-                            {hoveredProvince === province && (
-                                <div className="absolute z-10 bg-white shadow-xl top-35 rounded-md mt-2">
-                                    {province.districts.map((district) => (
-                                        <div
-                                            key={district.name}
-                                            className="relative px-4 py-2 hover:bg-gray-200 cursor-pointer "
-                                            onMouseEnter={() => handleMouseDistrictEnter(district)}
-                                            onMouseLeave={handleMouseDistrictLeave}
-                                        >
-                                            <span>{district.name}</span>
-                                            {hoveredDistrict === district && (
-                                                <div className={cn(`overflow-y-scroll absolute ${hoveredProvince && province.name === "N-Western" ? 'right-full' : 'left-full'} top-0 bg-white shadow-lg max-h-[300px] rounded-md showed-scroll-bar`)}>
-                                                    {district.compounds.map((town) => (
-                                                        <div
-                                                            onClick={() => onSelectCompound(town.name)}
-                                                            key={town.name}
-                                                            className="px-4 py-2 hover:bg-gray-200 cursor-pointer w-full"
-                                                            onMouseEnter={() => handleMouseTownEnter(town)}
-                                                            onMouseLeave={handleMouseTownLeave}
-                                                        >
-                                                            <span>{town.name}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
+                        >
+                            <span className='flex flex-row w-full text-sm font-semibold sm:text-xs md:text-sm lg:text-sm'>{province.name}</span>
+                            <ChevronDown size={12} />
                         </div>
-                    ))}
-                </div>
-                <div
-                    className="
+                        {hoveredProvince === province && (
+                            <div className="absolute z-10 bg-white shadow-xl top-35 rounded-md mt-2">
+                                {province.districts.map((district) => (
+                                    <div
+                                        key={district.name}
+                                        className="relative px-4 py-2 hover:bg-gray-200 cursor-pointer "
+                                        onMouseEnter={() => handleMouseDistrictEnter(district)}
+                                        onMouseLeave={handleMouseDistrictLeave}
+                                    >
+                                        <span>{district.name}</span>
+                                        {hoveredDistrict === district && (
+                                            <div className={cn(`overflow-y-scroll absolute ${hoveredProvince && province.name === "N-Western" ? 'right-full' : 'left-full'} top-0 bg-white shadow-lg max-h-[300px] rounded-md showed-scroll-bar`)}>
+                                                {district.compounds.map((town) => (
+                                                    <div
+                                                        onClick={() => onSelectCompound(town.name)}
+                                                        key={town.name}
+                                                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer w-full"
+                                                        onMouseEnter={() => handleMouseTownEnter(town)}
+                                                        onMouseLeave={handleMouseTownLeave}
+                                                    >
+                                                        <span>{town.name}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+            <div
+                className="
                     block
                     xl:hidden
               bg-yellow-900
@@ -197,11 +204,10 @@ const Dropdown: React.FC = () => {
               xl:right-3
             cursor-pointer
           "
-                >
-                    <HiChevronRight onClick={scrollRight} />
-                </div>
+            >
+                <HiChevronRight onClick={scrollRight} />
             </div>
-        </Container>
+        </div>
     );
 };
 

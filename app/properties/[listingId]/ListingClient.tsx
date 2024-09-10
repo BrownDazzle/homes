@@ -11,7 +11,7 @@ import useLoginModal from "@/app/hooks/useLoginModal";
 import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 
 import Container from "@/app/components/Container";
-import { categories, listingTypes } from "@/app/components/navbar/Categories";
+import { categories, listingCategories, listingTypes } from "@/app/components/navbar/Categories";
 import { useSession } from "next-auth/react";
 import {
   FieldValues,
@@ -65,7 +65,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const rentModal = useRentModal();
   const confetti = useConfettiStore();
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState(categories);
+  const [searchResults, setSearchResults] = useState(listingCategories);
 
   //const data = filterData(query);
   const filterPrompts = (searchtext: string) => {
@@ -387,7 +387,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                   title="Where is your place located?"
                   subtitle="Help guests find you!"
                 />
-                <PlacesHome />
+                {/*<PlacesHome />*/}
               </div>
 
             </div>

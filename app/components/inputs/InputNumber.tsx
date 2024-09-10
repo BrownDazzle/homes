@@ -62,7 +62,7 @@ const PhoneInput: React.FC<InputProps> = ({
           font-light 
           bg-white 
           border-2
-          rounded-md
+          rounded-lg
           outline-none
           transition
           disabled:opacity-70
@@ -82,7 +82,7 @@ const PhoneInput: React.FC<InputProps> = ({
           top-5 
           z-10 
           origin-[0] 
-          ${formatPrice ? 'left-14' : 'left-4'}
+          ${formatPrice ? 'left-4' : 'left-4'}
           peer-placeholder-shown:scale-100 
           peer-placeholder-shown:translate-y-0 
           peer-focus:scale-75

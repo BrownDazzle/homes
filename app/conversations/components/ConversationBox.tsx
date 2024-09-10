@@ -64,8 +64,8 @@ export default function ConversationBox({ data, selected }: ConversationBoxProps
     }, [lastMessage])
 
     return (
-        <div className={clsx(`w-full relative flex items-center space-x-3 hover:bg-[#404040] rounded-lg
-    transition cursor-pointer p-3 text-neutral-100`, selected ? 'bg-[#404040]' : 'bg-[#303030]')}
+        <div className={clsx(`w-full relative flex items-center space-x-3 hover:bg-slate-200 rounded-lg
+    transition cursor-pointer p-3 text-neutral-100`, selected ? 'bg-slate-200' : 'bg-[#fff]')}
             onClick={handleClick}>
             <Avatar src={otherUser?.image as string} />
             <div className="min-w-0 flex-1">

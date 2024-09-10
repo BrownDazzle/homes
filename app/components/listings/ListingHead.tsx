@@ -10,6 +10,7 @@ import { SafeUser } from "@/app/types";
 
 import Heading from "../Heading";
 import HeartButton from "../HeartButton";
+import dynamic from 'next/dynamic';
 
 interface ListingHeadProps {
   title: string | undefined;
@@ -17,8 +18,13 @@ interface ListingHeadProps {
   compound: string | undefined;
   imageSrc: string[] | undefined;
   id: string;
-  currentUser?: SafeUser | null
+  currentUser?: SafeUser | null,
+  locationValue: string;
 }
+
+const Map = dynamic(() => import('../Map'), {
+  ssr: false
+});
 
 const ListingHead: React.FC<ListingHeadProps> = ({
   title,
@@ -26,17 +32,21 @@ const ListingHead: React.FC<ListingHeadProps> = ({
   compound,
   imageSrc,
   id,
-  currentUser
+  currentUser,
+  locationValue
 }) => {
   const settings = {
     dots: true,
     infinite: imageSrc && imageSrc?.length > 1,
-    speed: 2000,
-    slidesToShow: 1,
+    speed: 5000,
+    slidesToShow: 2,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 5000, // Adjust the duration as needed
+    autoplaySpeed: 36000, // Adjust the duration as needed
   };
+  const { getByValue } = useCountries();
+
+  const coordinates = getByValue(locationValue)?.latlng
 
   return (
     <>
@@ -44,13 +54,17 @@ const ListingHead: React.FC<ListingHeadProps> = ({
         title={title as string}
         subtitle={`${district}, ${compound}`}
       />
+      <Map center={coordinates} />
+      <Heading
+        title="Photos"
+        subtitle=''
+      />
       <Slider {...settings}>
         {imageSrc?.map((banner, index) => (
           <div className="
           w-full
-          h-[60vh]
+          h-[200px]
           overflow-hidden 
-          rounded-xl
           relative
         "
             key={index}
@@ -61,19 +75,6 @@ const ListingHead: React.FC<ListingHeadProps> = ({
               className="object-cover w-full"
               alt="Image"
             />
-            <div
-              className="
-            absolute
-            top-5
-            right-5
-          "
-            >
-              <HeartButton
-                listingId={id}
-                currentUser={currentUser}
-              />
-            </div>
-
           </div>
         ))}
       </Slider>

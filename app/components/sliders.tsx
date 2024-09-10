@@ -40,9 +40,8 @@ const Sliders: React.FC<SlidersProps> = ({ banners, speed, slidesToShow, rtl, do
             {banners?.map((banner, index) => (
                 <div className="
                 w-full
-                h-[180px]
-                lg:h-[200px]
-                max-h-[200px]
+                h-[188px]
+                max-h-[188px]
                 overflow-hidden 
                 rounded-xl
                 relative
@@ -52,7 +51,7 @@ const Sliders: React.FC<SlidersProps> = ({ banners, speed, slidesToShow, rtl, do
                     <Image
                         src={banner}
                         fill
-                        className="object-cover w-full h-full"
+                        className="object-cover"
                         alt="Image"
                     />
                     {banners.length > 1 && (<div
@@ -61,8 +60,8 @@ const Sliders: React.FC<SlidersProps> = ({ banners, speed, slidesToShow, rtl, do
               rounded-full
               p-2
               absolute
-              bottom-[50%]
-              right-5
+             bottom-3
+    right-3
               cursor-pointer
               "
                     >
